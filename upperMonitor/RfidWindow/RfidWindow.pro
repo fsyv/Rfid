@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +14,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        rfidmainwindow.cpp
+        rfidmainwindow.cpp \
+    rfidoperating.cpp
 
-HEADERS  += rfidmainwindow.h
+HEADERS  += rfidmainwindow.h \
+    rfidoperating.h
 
 FORMS    += rfidmainwindow.ui
