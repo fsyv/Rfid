@@ -1,4 +1,4 @@
-#include "rfidmainwindow.h"
+#include "View/rfidmainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

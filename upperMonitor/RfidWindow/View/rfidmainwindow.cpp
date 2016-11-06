@@ -35,7 +35,6 @@ bool RfidMainWindow::nativeEvent(const QByteArray &eventType, void *message, lon
 {
     MSG* msg = reinterpret_cast<MSG*>(message);
     int msgType = msg->message;
-    static int a = 0;
     if(msgType == WM_DEVICECHANGE)
     {
         PDEV_BROADCAST_HDR lpdb = (PDEV_BROADCAST_HDR)msg->lParam;

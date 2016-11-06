@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += serialport
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,11 +14,15 @@ TARGET = RfidWindow
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        rfidmainwindow.cpp \
-    rfidoperating.cpp
+SOURCES += main.cpp \
+    Controller/connectionservice.cpp \
+    Model/rfidoperating.cpp \
+    View/rfidmainwindow.cpp
 
-HEADERS  += rfidmainwindow.h \
-    rfidoperating.h
+HEADERS  += \
+    Controller/connectionservice.h \
+    Model/rfidoperating.h \
+    View/rfidmainwindow.h
 
-FORMS    += rfidmainwindow.ui
+FORMS    += \
+    View/rfidmainwindow.ui

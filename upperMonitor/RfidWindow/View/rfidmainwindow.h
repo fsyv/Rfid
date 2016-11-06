@@ -11,7 +11,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
-#include "rfidoperating.h"
+#include "Model/rfidoperating.h"
 
 namespace Ui {
 class RfidMainWindow;
