@@ -17,12 +17,14 @@ TEMPLATE = app
 SOURCES += main.cpp \
     Controller/connectionservice.cpp \
     Model/rfidoperating.cpp \
-    View/rfidmainwindow.cpp
+    View/rfidmainwindow.cpp \
+    Controller/connectionserviceerror.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
     Model/rfidoperating.h \
-    View/rfidmainwindow.h
+    View/rfidmainwindow.h \
+    Controller/connectionserviceerror.h
 
 FORMS    += \
     View/rfidmainwindow.ui
