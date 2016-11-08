@@ -1,7 +1,7 @@
 #include "connectionservice.h"
 
-ConnectionService::ConnectionService(QString ip, int port):
-    QObject()
+ConnectionService::ConnectionService(QString ip, int port, QObject *parent):
+    QObject(parent)
 {
     this->httpServerUrl = 0;
     manager = 0;
@@ -51,13 +51,13 @@ void ConnectionService::setServerIpAddress(QString ip, int port)
  * @brief get请求
  * @param path 服务器路径
  */
-void ConnectionService::get(QString path)
+void ConnectionService::get(const QString path)
 {
     QUrl serverUrl(*httpServerUrl);
     serverUrl.setPath(path);
     QNetworkRequest request;
     request.setUrl(serverUrl);
-    manager->get(request);
+    waitForFinish(manager->get(request));
 }
 
 
@@ -71,6 +71,14 @@ void ConnectionService::replyFinished(QNetworkReply *reply)
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     QString replyString = codec->toUnicode(reply->readAll());
     qDebug()<<replyString;
-    qDebug()<<"1111";
     reply->deleteLater();
+}
+
+//等待事件get事件完成
+//没有这个循环等待会出现无法收到回复的消息，先保留这个问题
+void ConnectionService::waitForFinish(QNetworkReply *reply)
+{
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
 }

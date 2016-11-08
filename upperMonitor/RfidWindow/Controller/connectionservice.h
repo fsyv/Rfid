@@ -2,24 +2,30 @@
 #define CONNECTIONSERVICE_H
 #include <QObject>
 #include <QDebug>
-#include <QtNetwork>
 #include <QTextCodec>
 #include <QNetworkReply>    //回复
 #include <QNetworkRequest>  //请求
 #include <QNetworkAccessManager>
 #include <QUrl>
+#include <QEventLoop>
+#include <QThread>
 
 #include "connectionserviceerror.h"
 
-class ConnectionService:public QObject
+class ConnectionService : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionService(QString ip, int port);
+    explicit ConnectionService(QString ip, int port, QObject *parent = 0);
     ~ConnectionService();
     void setServerIpAddress(QString ip, int port);
-    void get(QString path);
+    void get(const QString path);
     void post();
+
+private:
+    //等待事件get事件完成
+    //没有这个循环等待会出现无法收到回复的消息，先保留这个问题
+    void waitForFinish(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *manager;
