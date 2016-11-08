@@ -11,7 +11,7 @@
 class ConnectionServiceError
 {
 public:
-    ConnectionServiceError();
+    explicit ConnectionServiceError();
 };
 
 #endif // CONNECTIONSERVICEERROR_H

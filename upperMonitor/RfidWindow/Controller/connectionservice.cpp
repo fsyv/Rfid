@@ -31,17 +31,18 @@ void ConnectionService::setServerIpAddress(QString ip, int port)
         httpServerUrl = 0;
     }
     httpServerUrl = new QUrl();
+    httpServerUrl->setScheme("http");
     httpServerUrl->setHost(ip);
     httpServerUrl->setPort(port);
 
     if(manager)
     {
         disconnect(manager, SIGNAL(finished(QNetworkReply*)),
-                            this, SLOT(replyFinished(QNetworkReply*)));
+                   this, SLOT(replyFinished(QNetworkReply*)));
         delete manager;
         manager = 0;
     }
-    manager = new QNetworkAccessManager();
+    manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
 }
@@ -54,7 +55,9 @@ void ConnectionService::get(QString path)
 {
     QUrl serverUrl(*httpServerUrl);
     serverUrl.setPath(path);
-    manager->get(QNetworkRequest(serverUrl));
+    QNetworkRequest request;
+    request.setUrl(serverUrl);
+    manager->get(request);
 }
 
 
@@ -63,7 +66,11 @@ void ConnectionService::post()
 
 }
 
-void ConnectionService::replyFinished(QNetworkReply *)
+void ConnectionService::replyFinished(QNetworkReply *reply)
 {
-
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QString replyString = codec->toUnicode(reply->readAll());
+    qDebug()<<replyString;
+    qDebug()<<"1111";
+    reply->deleteLater();
 }

@@ -15,7 +15,7 @@ class ConnectionService:public QObject
 {
     Q_OBJECT
 public:
-    ConnectionService(QString ip, int port);
+    explicit ConnectionService(QString ip, int port);
     ~ConnectionService();
     void setServerIpAddress(QString ip, int port);
     void get(QString path);
@@ -25,7 +25,7 @@ private:
     QNetworkAccessManager *manager;
     QUrl *httpServerUrl;
 private slots:
-    void replyFinished(QNetworkReply *);
+    void replyFinished(QNetworkReply *reply);
 };
 
 #endif // CONNECTIONSERVICE_H
