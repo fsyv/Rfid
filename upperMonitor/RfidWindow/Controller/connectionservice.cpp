@@ -57,6 +57,7 @@ void ConnectionService::get(const QString path)
     serverUrl.setPath(path);
     QNetworkRequest request;
     request.setUrl(serverUrl);
+    qDebug() << serverUrl.url();
     waitForFinish(manager->get(request));
 }
 

@@ -8,7 +8,6 @@
 #include <QNetworkAccessManager>
 #include <QUrl>
 #include <QEventLoop>
-#include <QThread>
 
 #include "connectionserviceerror.h"
 

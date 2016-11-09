@@ -18,13 +18,15 @@ SOURCES += main.cpp \
     Controller/connectionservice.cpp \
     Model/rfidoperating.cpp \
     View/rfidmainwindow.cpp \
-    Controller/connectionserviceerror.cpp
+    Controller/connectionserviceerror.cpp \
+    Controller/commodity.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
     Model/rfidoperating.h \
     View/rfidmainwindow.h \
-    Controller/connectionserviceerror.h
+    Controller/connectionserviceerror.h \
+    Controller/commodity.h
 
 FORMS    += \
     View/rfidmainwindow.ui

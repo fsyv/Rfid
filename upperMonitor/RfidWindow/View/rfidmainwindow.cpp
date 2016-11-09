@@ -1,5 +1,7 @@
 #include "rfidmainwindow.h"
 #include "ui_rfidmainwindow.h"
+#include "Controller/connectionservice.h"
+
 RfidMainWindow::RfidMainWindow(QWidget *parent):
     ui(new Ui::RfidMainWindow)
 {
@@ -9,6 +11,10 @@ RfidMainWindow::RfidMainWindow(QWidget *parent):
     connect(this, SIGNAL(devDisConnection()), this, SLOT(disconnectCardReader()));
     //程序启动的时候发送一个扫描端口的信号
     emit devConnection();
+
+    ConnectionService w("127.0.0.1", 5000);
+    w.get("/login");
+
 }
 
 RfidMainWindow::~RfidMainWindow()
