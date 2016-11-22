@@ -21,6 +21,7 @@ SOURCES += main.cpp \
     Controller/connectionserviceerror.cpp \
     Controller/commodity.cpp \
     Controller/connectionserviceviatcp.cpp
+    Controller/qconnectionthread.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \

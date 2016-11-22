@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <qDebug>
 #include <QList>
+#include <QThreadPool>
 
 //USB抽插事件用的
 #include <dbt.h>
@@ -43,7 +44,7 @@ private:
     QMap<QString, RfidOperating *> readers;
 
 protected:
-    //USE抽插事件
+    //USB抽插事件
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
     //添加端口到字典
     void insertComPort(QSerialPortInfo info);
