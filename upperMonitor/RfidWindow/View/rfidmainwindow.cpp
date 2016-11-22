@@ -12,8 +12,8 @@ RfidMainWindow::RfidMainWindow(QWidget *parent):
     //程序启动的时候发送一个扫描端口的信号
     emit devConnection();
 
-    ConnectionService w("127.0.0.1", 5000);
-    w.get("/login");
+//    ConnectionService w("127.0.0.1", 5000);
+//    w.get("/login");
 
 }
 

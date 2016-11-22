@@ -10,6 +10,7 @@
 #include <QEventLoop>
 
 #include "connectionserviceerror.h"
+#include "qconnectionthread.h"
 
 class ConnectionService : public QObject
 {
@@ -31,6 +32,7 @@ private:
     QUrl *httpServerUrl;
 private slots:
     void replyFinished(QNetworkReply *reply);
+    void readMessage(QString message);
 };
 
 #endif // CONNECTIONSERVICE_H
