@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     Controller/commodity.cpp \
     Controller/connectionserviceviatcp.cpp \
     Controller/qconnectionthread.cpp \
-    View/login.cpp
+    View/login.cpp \
+    View/widgeterror.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -32,7 +33,8 @@ HEADERS  += \
     Controller/commodity.h \
     Controller/connectionserviceviatcp.h \
     Controller/qconnectionthread.h \
-    View/login.h
+    View/login.h \
+    View/widgeterror.h
 
 FORMS    += \
     View/rfidmainwindow.ui \

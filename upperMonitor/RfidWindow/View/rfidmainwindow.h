@@ -31,6 +31,8 @@ signals:
     //use设备连接与断开的信号
     void devConnection();
     void devDisConnection();
+    //退出
+    void logout();
 
 public slots:
     void connectCardReader();

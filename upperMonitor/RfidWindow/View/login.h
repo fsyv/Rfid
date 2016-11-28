@@ -10,6 +10,7 @@ class Login;
 
 QT_BEGIN_NAMESPACE
 class QMessageBox;
+class RfidMainWindow;
 QT_END_NAMESPACE
 
 class Login : public QWidget
@@ -34,12 +35,14 @@ private:
 
 private slots:
     void on_LoginPushButton_clicked();
+    void employeeWidgetLogout();
 
 private:
     Ui::Login *ui;
     QString userName;
     QString userPass;
     pWidgetCallBack currenWidget;
+    RfidMainWindow *rfidMainWindow;
 };
 
 #endif // LOGIN_H

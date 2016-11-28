@@ -1,5 +1,7 @@
 #include "login.h"
 #include "ui_login.h"
+#include "View/widgeterror.h"
+#include "View/rfidmainwindow.h"
 #include <QMessageBox>
 #include <qDebug>
 
@@ -8,6 +10,7 @@ Login::Login(QWidget *parent) :
     ui(new Ui::Login)
 {
     ui->setupUi(this);
+    rfidMainWindow = 0;
 }
 
 Login::~Login()
@@ -33,7 +36,7 @@ bool Login::checkInputIsEmpty()
 
 bool Login::checkUserNameAndPassIsRight()
 {
-    return false;
+    return true;
 }
 
 void Login::adminWidget()
@@ -43,7 +46,16 @@ void Login::adminWidget()
 
 void Login::employeeWidget()
 {
-    qDebug()<<"我是员工";
+    rfidMainWindow = new RfidMainWindow();
+
+    if(!rfidMainWindow)
+    {
+        throw new WidgetError("内存不足", WidgetError::MemoryError);
+    }
+
+    connect(rfidMainWindow, SIGNAL(logout()), this, SLOT(employeeWidgetLogout()));
+    rfidMainWindow->show();
+
 }
 
 void Login::on_LoginPushButton_clicked()
@@ -75,6 +87,16 @@ void Login::on_LoginPushButton_clicked()
         errorMessage("账号错误");
         return;
     }
+    try{
+        currenWidget();
+    }
+    catch(WidgetError *widgetError){
+        errorMessage(widgetError->getErrorString());
+    }
+}
 
-    currenWidget();
+void Login::employeeWidgetLogout()
+{
+    delete rfidMainWindow;
+    rfidMainWindow = 0;
 }
