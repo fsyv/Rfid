@@ -11,22 +11,23 @@
  * @date 2016年11月7日
  * @version 1.0
  */
-class ConnectionServiceError:public QException
+class ConnectionServiceError/*:public QException*/
 {
-public:
-    enum ErrorType {
-        NoError,    //没有错误，但是发生了异常情况
-        ConnectionError,    //连接服务器失败
-        StatementError,
-        TransactionError,
-        UnknownError
-    };
-    explicit ConnectionServiceError(const QString errorInfo, ErrorType &errorType, QException *exception = Q_NULLPTR);
+//public:
+//    enum ErrorType {
+//        NoError,    //没有错误，但是发生了异常情况
+//        ConnectionError,    //连接服务器失败
+//        StatementError,
+//        TransactionError,
+//        UnknownError
+//    };
+//    explicit ConnectionServiceError(const QString errorInfo, ErrorType &errorType/*, QException *exception = Q_NULLPTR*/);
+//    virtual ~ConnectionServiceError();
 
-private:
-    QString errorInfo;
-    QSqlError::ErrorType errorType;
-    QString errorCode;
+//private:
+//    QString errorInfo;
+//    ErrorType errorType;
+//    QString errorCode;
 };
 
 #endif // CONNECTIONSERVICEERROR_H

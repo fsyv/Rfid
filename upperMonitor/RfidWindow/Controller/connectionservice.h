@@ -10,7 +10,7 @@
 #include <QEventLoop>
 
 #include "connectionserviceerror.h"
-#include "qconnectionthread.h"
+#include "Controller/qconnectionthread.h"
 
 class ConnectionService : public QObject
 {

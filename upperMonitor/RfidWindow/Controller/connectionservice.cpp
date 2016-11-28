@@ -6,10 +6,6 @@ ConnectionService::ConnectionService(QString ip, int port, QObject *parent):
     this->httpServerUrl = 0;
     manager = 0;
     setServerIpAddress(ip, port);
-
-    QConnectionThread *thread = new QConnectionThread();
-    connect(thread, SIGNAL(readMessage(QString), this, SLOT(readMessage(QString)));
-
 }
 
 ConnectionService::~ConnectionService()

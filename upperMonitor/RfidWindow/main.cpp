@@ -1,16 +1,16 @@
-#include "View/rfidmainwindow.h"
+#include "View/login.h"
 #include <QApplication>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <qDebug>
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    RfidMainWindow w;
+
+    Login w;
     w.show();
-
-
 
     return a.exec();
 }

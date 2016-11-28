@@ -20,8 +20,9 @@ SOURCES += main.cpp \
     View/rfidmainwindow.cpp \
     Controller/connectionserviceerror.cpp \
     Controller/commodity.cpp \
-    Controller/connectionserviceviatcp.cpp
-    Controller/qconnectionthread.cpp
+    Controller/connectionserviceviatcp.cpp \
+    Controller/qconnectionthread.cpp \
+    View/login.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -29,7 +30,10 @@ HEADERS  += \
     View/rfidmainwindow.h \
     Controller/connectionserviceerror.h \
     Controller/commodity.h \
-    Controller/connectionserviceviatcp.h
+    Controller/connectionserviceviatcp.h \
+    Controller/qconnectionthread.h \
+    View/login.h
 
 FORMS    += \
-    View/rfidmainwindow.ui
+    View/rfidmainwindow.ui \
+    View/login.ui

@@ -1,7 +1,7 @@
 #include "qconnectionthread.h"
 
-QConnectionThread::QConnectionThread(QObject *parent)
-    :QThread(parent)
+QConnectionThread::QConnectionThread()
+    :QThread()
 {
 
 }
@@ -10,7 +10,7 @@ void QConnectionThread::run()
 {
     while(true)
     {
-        usleep(1);
+        sleep(1);
         emit readMessage("收到消息");
     }
 
