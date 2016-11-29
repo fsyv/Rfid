@@ -26,8 +26,6 @@ private:
     void errorMessage(QString errorString);
     bool checkInputIsEmpty();
     bool checkUserNameAndPassIsRight();
-    //界面的回调函数
-    typedef void(*pWidgetCallBack)();
     //管理员的界面
     void adminWidget();
     //员工的界面
@@ -41,7 +39,6 @@ private:
     Ui::Login *ui;
     QString userName;
     QString userPass;
-    pWidgetCallBack currenWidget;
     RfidMainWindow *rfidMainWindow;
 };
 

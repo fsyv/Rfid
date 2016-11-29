@@ -64,6 +64,20 @@ bool RfidMainWindow::nativeEvent(const QByteArray &eventType, void *message, lon
     return false;
 }
 
+void RfidMainWindow::closeEvent(QCloseEvent *e)
+{
+    if(QMessageBox::Yes == QMessageBox::question(NULL, \
+                                                 "提示", \
+                                                 "是否关闭?", \
+                                                 QMessageBox::Yes|QMessageBox::No))
+    {
+        logout();
+        e->accept();
+    }
+    else
+        e->ignore();
+}
+
 void RfidMainWindow::insertComPort(QSerialPortInfo info)
 {
     qSerialPorts.append(info.portName());
@@ -76,6 +90,14 @@ void RfidMainWindow::revomeComPort(QString comPortName)
         delete readers[comPortName];
     readers[comPortName] = 0;
     readers.remove(comPortName);
+}
+
+/**
+ * @brief 注销登录
+ */
+void RfidMainWindow::logout()
+{
+    emit exitWidget();
 }
 
 /**

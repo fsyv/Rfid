@@ -53,7 +53,7 @@ void Login::employeeWidget()
         throw new WidgetError("内存不足", WidgetError::MemoryError);
     }
 
-    connect(rfidMainWindow, SIGNAL(logout()), this, SLOT(employeeWidgetLogout()));
+    connect(rfidMainWindow, SIGNAL(exitWidget()), this, SLOT(employeeWidgetLogout()));
     rfidMainWindow->show();
 
 }
@@ -78,25 +78,22 @@ void Login::on_LoginPushButton_clicked()
     switch (userName.at(0).unicode()) {
     case '0':
         //管理员
-        currenWidget  = (pWidgetCallBack)&(adminWidget);
+        adminWidget();
+        break;
     case '1':
         //员工
-        currenWidget = (pWidgetCallBack)&(employeeWidget);
+        employeeWidget();
         break;
     default:
         errorMessage("账号错误");
         return;
     }
-    try{
-        currenWidget();
-    }
-    catch(WidgetError *widgetError){
-        errorMessage(widgetError->getErrorString());
-    }
+    this->hide();
 }
 
 void Login::employeeWidgetLogout()
 {
     delete rfidMainWindow;
     rfidMainWindow = 0;
+    this->show();
 }
