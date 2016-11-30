@@ -62,6 +62,10 @@ protected:
     void revomeComPort(QString comPortName);
     //注销
     void logout();
+private slots:
+    void on_enterRadioButton_clicked();
+    void on_outRadioButton_clicked();
+    void on_logoutAction_triggered();
 };
 
 #endif // RFIDMAINWINDOW_H

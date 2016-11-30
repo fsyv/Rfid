@@ -137,3 +137,18 @@ void RfidMainWindow::disconnectCardReader()
     }
 }
 
+
+void RfidMainWindow::on_enterRadioButton_clicked()
+{
+
+}
+
+void RfidMainWindow::on_outRadioButton_clicked()
+{
+
+}
+
+void RfidMainWindow::on_logoutAction_triggered()
+{
+
+}
