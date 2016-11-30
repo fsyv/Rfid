@@ -1,8 +1,8 @@
 #include "View/login.h"
 #include <QApplication>
-#include <QJsonObject>
-#include <QJsonDocument>
 #include <qDebug>
+
+#include "Model/rfidoperating.h"
 
 
 int main(int argc, char *argv[])
