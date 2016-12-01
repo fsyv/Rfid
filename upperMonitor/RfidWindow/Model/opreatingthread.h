@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class RfidOpreatingMachine;
+class RfidCardReadInfo;
 QT_END_NAMESPACE
 
 class OpreatingThread: public QThread
@@ -18,8 +19,14 @@ public:
 
     void setIsRun(bool value);
 
+signals:
+    void sendCardMessage(const RfidCardReadInfo &);
+
 private:
     RfidOpreatingMachine *machine;
+
+    QString preCardID;
+    QString currentCardID;
 
     bool isRun;
 };

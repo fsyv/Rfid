@@ -20,7 +20,7 @@ public:
     //寻找卡
     void findCard();
     //防冲撞
-    void anticoll();
+    QString anticoll();
     //激活卡
     void selectCard();
     //设置工作状态
@@ -86,7 +86,7 @@ private:
 
 private :
     QLibrary *mainLib;
-    char pSnr[10];//卡的序列号
+    unsigned char pSnr[10];//卡的序列号
     unsigned char pLen;//卡序列号长度
 };
 

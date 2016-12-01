@@ -113,7 +113,7 @@ void RfidOperating::findCard()
  * @brief 防冲撞
  * @return 卡号
  */
-void RfidOperating::anticoll()
+QString RfidOperating::anticoll()
 {
     rf_anticoll = (Rf_Anticoll)mainLib->resolve("rf_anticoll");
     if(!rf_anticoll)
@@ -124,9 +124,18 @@ void RfidOperating::anticoll()
 
     memset(pSnr, 0, sizeof(pSnr));
 
-    if(rf_anticoll(0, 4, (unsigned char *)pSnr, &pLen))
+    if(rf_anticoll(0, 4, pSnr, &pLen))
         errorMessage("防碰撞失败!");
 
+    char chBuf[2];
+    QString str;
+
+    for(int i = 0; i < int(pLen) && pSnr[i] != '\0'; ++i)
+    {
+        sprintf(chBuf, "%02x", pSnr[i]);
+        str += chBuf;
+    }
+    return str;
 }
 
 /**
@@ -141,7 +150,7 @@ void RfidOperating::selectCard()
         exit(1);
     }
     unsigned char Size=0;//返回卡的容量
-    if(rf_select(0, (unsigned char *)pSnr, pLen, &Size))
+    if(rf_select(0, pSnr, pLen, &Size))
         errorMessage("激活卡失败!");
 }
 

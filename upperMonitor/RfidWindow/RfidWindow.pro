@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     View/login.cpp \
     View/widgeterror.cpp \
     Model/rfidopreatingmachine.cpp \
-    Model/opreatingthread.cpp
+    Model/opreatingthread.cpp \
+    Model/rfidcardreadinfo.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -38,7 +39,8 @@ HEADERS  += \
     View/login.h \
     View/widgeterror.h \
     Model/rfidopreatingmachine.h \
-    Model/opreatingthread.h
+    Model/opreatingthread.h \
+    Model/rfidcardreadinfo.h
 
 FORMS    += \
     View/rfidmainwindow.ui \

@@ -3,9 +3,11 @@
 #include "Controller/connectionservice.h"
 
 #include "Model/opreatingthread.h"
+#include "Model/rfidcardreadinfo.h"
 
 RfidMainWindow::RfidMainWindow(QWidget *parent):
-    ui(new Ui::RfidMainWindow)
+    ui(new Ui::RfidMainWindow),
+    currentWorkType(NO_WORK_TYPE)
 {
     ui->setupUi(this);
     qSerialPorts.clear();
@@ -90,6 +92,8 @@ void RfidMainWindow::insertComPort(QSerialPortInfo info)
 {
     qSerialPorts.append(info.portName());
     OpreatingThread *machine = new OpreatingThread(info.portName());
+    //这两个在不同的线程
+    connect(machine, SIGNAL(sendCardMessage(RfidCardReadInfo)), this, SLOT(updateTextEdit(RfidCardReadInfo)), Qt::QueuedConnection);
     readers.insert(info.portName(), machine);
 
     machine->start();
@@ -102,7 +106,7 @@ void RfidMainWindow::revomeComPort(QString comPortName)
     {
         readers[comPortName]->setIsRun(false);
         readers[comPortName]->wait();
-//        readers[comPortName]->quit();
+        //        readers[comPortName]->quit();
         delete readers[comPortName];
     }
     readers[comPortName] = 0;
@@ -157,15 +161,44 @@ void RfidMainWindow::disconnectCardReader()
     }
 }
 
+void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
+{
+    QString workInfo("");
+
+    workInfo += rfidCardReadInfo.getDate().toString() + "\n";
+
+    switch(currentWorkType){
+    case IN_OF_The_LIBRARY:
+        workInfo += "出库";
+        break;
+    case OUT_OF_The_LIBRARY:
+        workInfo += "入库";
+        break;
+    default:
+        break;
+    }
+
+    workInfo += "货物";
+    workInfo += rfidCardReadInfo.getData() + "\n";
+
+    qDebug() << workInfo;
+
+    ui->textEdit->append(workInfo);
+    //自动显示到文本末尾
+    QTextCursor cursor =  ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->textEdit->setTextCursor(cursor);
+}
+
 
 void RfidMainWindow::on_enterRadioButton_clicked()
 {
-
+    currentWorkType = IN_OF_The_LIBRARY;
 }
 
 void RfidMainWindow::on_outRadioButton_clicked()
 {
-
+    currentWorkType = OUT_OF_The_LIBRARY;
 }
 
 void RfidMainWindow::on_logoutAction_triggered()

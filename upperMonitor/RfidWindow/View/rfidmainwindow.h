@@ -7,6 +7,7 @@
 #include <QList>
 #include <QThreadPool>
 #include <QCloseEvent>
+#include <QTextCursor>
 #include <QMessageBox>
 
 //USB抽插事件用的
@@ -23,6 +24,7 @@ class RfidMainWindow;
 
 QT_BEGIN_NAMESPACE
 class OpreatingThread;
+class RfidCardReadInfo;
 QT_END_NAMESPACE
 
 class RfidMainWindow : public QMainWindow
@@ -40,16 +42,28 @@ signals:
     //退出
     void exitWidget();
 
-public slots:
+private slots:
+    //连接与断开读卡器
     void connectCardReader();
     void disconnectCardReader();
+    //刷新显示框用
+    void updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo);
 
 private:
+    enum ReadCardWorkType{
+        NO_WORK_TYPE = 0,            //没有设置工作状态
+        IN_OF_The_LIBRARY , //入库
+        OUT_OF_The_LIBRARY     //出库
+
+    };
+
     Ui::RfidMainWindow *ui;
     //保存端口信息
     QList<QString> qSerialPorts;
     //连接的读卡器设备
     QMap<QString, OpreatingThread *> readers;
+    //当前是出库还是入库
+    ReadCardWorkType currentWorkType;
 
 protected:
     //USB抽插事件

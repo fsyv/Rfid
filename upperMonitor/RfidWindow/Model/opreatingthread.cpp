@@ -1,8 +1,12 @@
 #include "opreatingthread.h"
+
 #include "rfidopreatingmachine.h"
+#include "rfidcardreadinfo.h"
 
 OpreatingThread::OpreatingThread(QString comName):
-    QThread()
+    QThread(),
+    currentCardID(""),
+    preCardID("")
 {
     comName.remove("COM");
     machine = new RfidOpreatingMachine(comName.toInt());
@@ -21,17 +25,24 @@ void OpreatingThread::run()
     qDebug() << "come";
     while (isRun) {
         readInfo();
-        msleep(500);
+        msleep(100);
     }
 }
 
 void OpreatingThread::readInfo()
 {
     machine->findCard();
-    machine->anticoll();
-    machine->selectCard();
-    machine->authentication();
-    qDebug() << machine->readData();
+    currentCardID = machine->anticoll();
+
+    if(currentCardID != QString("") && currentCardID != preCardID)
+    {
+        preCardID = currentCardID;
+        machine->selectCard();
+        machine->authentication();
+        qDebug() << currentCardID;
+        RfidCardReadInfo rfidCardReadInfo(machine->readData(), currentCardID, QDate::currentDate());
+        emit sendCardMessage(rfidCardReadInfo);
+    }
 }
 
 void OpreatingThread::setIsRun(bool value)
