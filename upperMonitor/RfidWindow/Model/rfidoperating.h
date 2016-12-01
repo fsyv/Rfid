@@ -9,12 +9,6 @@ class RfidOperating
 public:
     RfidOperating();
 
-public:
-    //加载动态库
-    void loadDLL();
-    //错误信息
-    void errorMessage(QString errorString);
-
     //获取动态库的版本号
     int currentLibraryVersion();
     //初始化端口
@@ -35,6 +29,12 @@ public:
     void authentication(unsigned char block = 0x01);
     //读取数据
     QString readData();
+
+private:
+    //加载动态库
+    void loadDLL();
+    //错误信息
+    void errorMessage(QString errorString);
 
 private:
     //从动态链接库里面加载的函数
@@ -86,7 +86,7 @@ private:
 
 private :
     QLibrary *mainLib;
-    unsigned char pSnr[10];//卡的序列号
+    char pSnr[10];//卡的序列号
     unsigned char pLen;//卡序列号长度
 };
 

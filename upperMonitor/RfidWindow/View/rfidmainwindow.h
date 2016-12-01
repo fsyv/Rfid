@@ -22,7 +22,7 @@ class RfidMainWindow;
 }
 
 QT_BEGIN_NAMESPACE
-
+class OpreatingThread;
 QT_END_NAMESPACE
 
 class RfidMainWindow : public QMainWindow
@@ -49,7 +49,7 @@ private:
     //保存端口信息
     QList<QString> qSerialPorts;
     //连接的读卡器设备
-    QMap<QString, RfidOperating *> readers;
+    QMap<QString, OpreatingThread *> readers;
 
 protected:
     //USB抽插事件

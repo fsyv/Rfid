@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     Controller/connectionserviceviatcp.cpp \
     Controller/qconnectionthread.cpp \
     View/login.cpp \
-    View/widgeterror.cpp
+    View/widgeterror.cpp \
+    Model/rfidopreatingmachine.cpp \
+    Model/opreatingthread.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -34,7 +36,9 @@ HEADERS  += \
     Controller/connectionserviceviatcp.h \
     Controller/qconnectionthread.h \
     View/login.h \
-    View/widgeterror.h
+    View/widgeterror.h \
+    Model/rfidopreatingmachine.h \
+    Model/opreatingthread.h
 
 FORMS    += \
     View/rfidmainwindow.ui \

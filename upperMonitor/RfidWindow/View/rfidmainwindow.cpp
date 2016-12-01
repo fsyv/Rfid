@@ -2,6 +2,8 @@
 #include "ui_rfidmainwindow.h"
 #include "Controller/connectionservice.h"
 
+#include "Model/opreatingthread.h"
+
 RfidMainWindow::RfidMainWindow(QWidget *parent):
     ui(new Ui::RfidMainWindow)
 {
@@ -17,9 +19,15 @@ RfidMainWindow::~RfidMainWindow()
 {
     delete ui;
 
-    QMap<QString, RfidOperating *>::iterator cur;
+    QMap<QString, OpreatingThread *>::iterator cur;
     for(cur = readers.begin(); cur != readers.end(); ++cur)
+    {
+        cur.value()->setIsRun(false);
+        cur.value()->wait();
+        //cur.value()->moveToThread(QThread::currentThread());
         delete cur.value();
+    }
+
     readers.clear();
 
     qSerialPorts.clear();
@@ -81,13 +89,22 @@ void RfidMainWindow::closeEvent(QCloseEvent *e)
 void RfidMainWindow::insertComPort(QSerialPortInfo info)
 {
     qSerialPorts.append(info.portName());
+    OpreatingThread *machine = new OpreatingThread(info.portName());
+    readers.insert(info.portName(), machine);
+
+    machine->start();
 }
 
 void RfidMainWindow::revomeComPort(QString comPortName)
 {
     qSerialPorts.removeOne(comPortName);
     if(readers[comPortName])
+    {
+        readers[comPortName]->setIsRun(false);
+        readers[comPortName]->wait();
+//        readers[comPortName]->quit();
         delete readers[comPortName];
+    }
     readers[comPortName] = 0;
     readers.remove(comPortName);
 }
@@ -111,8 +128,11 @@ void RfidMainWindow::connectCardReader()
         if(!qSerialPorts.contains(info.portName()))
         {
             qDebug()<<"新增串口"<<info.portName();
-            qDebug()<<"此串口为读卡器";
-            insertComPort(info);
+            if(info.description() == QString("Silicon Labs CP210x USB to UART Bridge"))
+            {
+                qDebug()<<"此串口为读卡器";
+                insertComPort(info);
+            }
         }
     }
 }

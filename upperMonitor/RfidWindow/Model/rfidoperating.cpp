@@ -21,7 +21,7 @@ void RfidOperating::loadDLL()
 
 void RfidOperating::errorMessage(QString errorString)
 {
-    QMessageBox::critical(NULL, "错误", errorString);
+    //QMessageBox::critical(NULL, "错误", errorString);
 }
 
 /**
@@ -122,8 +122,11 @@ void RfidOperating::anticoll()
         exit(1);
     }
 
-    if(rf_anticoll(0, 4, pSnr, &pLen))
+    memset(pSnr, 0, sizeof(pSnr));
+
+    if(rf_anticoll(0, 4, (unsigned char *)pSnr, &pLen))
         errorMessage("防碰撞失败!");
+
 }
 
 /**
@@ -138,7 +141,7 @@ void RfidOperating::selectCard()
         exit(1);
     }
     unsigned char Size=0;//返回卡的容量
-    if(rf_select(0, pSnr, pLen, &Size))
+    if(rf_select(0, (unsigned char *)pSnr, pLen, &Size))
         errorMessage("激活卡失败!");
 }
 
@@ -189,8 +192,10 @@ QString RfidOperating::readData()
         exit(1);
     }
 
-    char *Data;
+    char Data[20];
     unsigned char Len;
+
+    memset(Data, 0, sizeof(Data));
 
     if(rf_M1_read(0, 0x01, (unsigned char *)Data, &Len))
         errorMessage("读取数据失败!");
