@@ -4,6 +4,7 @@
 
 #include "Model/opreatingthread.h"
 #include "Model/rfidcardreadinfo.h"
+#include "Controller/configureinfo.h"
 
 RfidMainWindow::RfidMainWindow(QWidget *parent):
     ui(new Ui::RfidMainWindow),
@@ -132,7 +133,7 @@ void RfidMainWindow::connectCardReader()
         if(!qSerialPorts.contains(info.portName()))
         {
             qDebug()<<"新增串口"<<info.portName();
-            if(info.description() == QString("Silicon Labs CP210x USB to UART Bridge"))
+            if(info.description() == ConfigureInfo::getRfidDescription())
             {
                 qDebug()<<"此串口为读卡器";
                 insertComPort(info);

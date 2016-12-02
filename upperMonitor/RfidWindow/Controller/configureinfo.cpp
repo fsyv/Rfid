@@ -1,6 +1,7 @@
 #include "configureinfo.h"
 
 ConfigureInfo* ConfigureInfo::pInstance = 0;
+QMutex ConfigureInfo::qMutex;
 
 ConfigureInfo *ConfigureInfo::getInstance()
 {
@@ -11,6 +12,7 @@ ConfigureInfo *ConfigureInfo::getInstance()
     {
         qMutex.lock();
         pInstance = new ConfigureInfo();
+        qMutex.unlock();
         return pInstance;
     }
 }
@@ -18,13 +20,19 @@ ConfigureInfo *ConfigureInfo::getInstance()
 QString ConfigureInfo::getRfidDescription()
 {
     QSettings *settings = getInstance()->configureSettings;
+    //以UTF-8编码解析字符串
     QByteArray byteArray = settings->value("RFIDDESCRIPTION/description").toByteArray();
-    QString description;
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QString description = codec->toUnicode(byteArray);
+
+    qDebug() << description;
+
+    return description;
 }
 
 ConfigureInfo::ConfigureInfo()
 {
-    configureSettings = new QSettings("system.ini", QSettings::IniFormat);
+    configureSettings = new QSettings("./system.ini", QSettings::IniFormat);
 }
 
 ConfigureInfo::~ConfigureInfo()
@@ -32,6 +40,5 @@ ConfigureInfo::~ConfigureInfo()
     if(configureSettings)
         delete configureSettings;
     configureSettings = 0;
-    qMutex.unlock();
 }
 

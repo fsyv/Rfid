@@ -5,6 +5,8 @@
 #include <QMutex>
 #include <QTextCodec>
 
+#include <qDebug>
+
 /**
  * @brief 全局单实例类，配置文件的读取
  */
