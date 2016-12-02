@@ -40,7 +40,7 @@ void OpreatingThread::readInfo()
         machine->selectCard();
         machine->authentication();
         qDebug() << currentCardID;
-        RfidCardReadInfo rfidCardReadInfo(machine->readData(), currentCardID, QDate::currentDate());
+        RfidCardReadInfo rfidCardReadInfo(machine->readData(), currentCardID, QDateTime::currentDateTime());
         emit sendCardMessage(rfidCardReadInfo);
     }
 }

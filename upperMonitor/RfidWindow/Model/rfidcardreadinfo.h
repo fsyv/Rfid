@@ -2,14 +2,17 @@
 #define RFIDCARDREADINFO_H
 
 #include <QString>
-#include <QDate>
+#include <QDateTime>
 
 class RfidCardReadInfo
 {
 public:
-    RfidCardReadInfo(QString data, QString cardID, QDate date);
+    explicit RfidCardReadInfo();
+    explicit RfidCardReadInfo(QString data, QString cardID, QDateTime dateTime);
+    explicit RfidCardReadInfo(const RfidCardReadInfo &rfidCardReadInfo);
+    virtual ~RfidCardReadInfo();
 
-    QDate getDate() const;
+    QDateTime getDateTime() const;
 
     QString getCardID() const;
 
@@ -18,7 +21,7 @@ public:
 private:
     QString data;
     QString cardID;
-    QDate date;
+    QDateTime dateTime;
 };
 
 #endif // RFIDCARDREADINFO_H

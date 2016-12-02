@@ -6,6 +6,8 @@
 #include "Model/rfidcardreadinfo.h"
 #include "Controller/configureinfo.h"
 
+Q_DECLARE_METATYPE(RfidCardReadInfo)
+
 RfidMainWindow::RfidMainWindow(QWidget *parent):
     ui(new Ui::RfidMainWindow),
     currentWorkType(NO_WORK_TYPE)
@@ -93,6 +95,8 @@ void RfidMainWindow::insertComPort(QSerialPortInfo info)
 {
     qSerialPorts.append(info.portName());
     OpreatingThread *machine = new OpreatingThread(info.portName());
+
+    int id=qRegisterMetaType<RfidCardReadInfo>("");
     //这两个在不同的线程
     connect(machine, SIGNAL(sendCardMessage(RfidCardReadInfo)), this, SLOT(updateTextEdit(RfidCardReadInfo)), Qt::QueuedConnection);
     readers.insert(info.portName(), machine);
@@ -166,21 +170,21 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 {
     QString workInfo("");
 
-    workInfo += rfidCardReadInfo.getDate().toString() + "\n";
+    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
 
     switch(currentWorkType){
     case IN_OF_The_LIBRARY:
-        workInfo += "出库";
+        workInfo += "入库";
         break;
     case OUT_OF_The_LIBRARY:
-        workInfo += "入库";
+        workInfo += "出库";
         break;
     default:
         break;
     }
 
     workInfo += "货物";
-    workInfo += rfidCardReadInfo.getData() + "\n";
+    workInfo += rfidCardReadInfo.getData();
 
     qDebug() << workInfo;
 
