@@ -170,23 +170,25 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 {
     QString workInfo("");
 
-    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
+//    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
 
-    switch(currentWorkType){
-    case IN_OF_The_LIBRARY:
-        workInfo += "入库";
-        break;
-    case OUT_OF_The_LIBRARY:
-        workInfo += "出库";
-        break;
-    default:
-        break;
-    }
+//    switch(currentWorkType){
+//    case IN_OF_The_LIBRARY:
+//        workInfo += "入库";
+//        break;
+//    case OUT_OF_The_LIBRARY:
+//        workInfo += "出库";
+//        break;
+//    default:
+//        break;
+//    }
 
-    workInfo += "货物";
-    workInfo += rfidCardReadInfo.getData();
+//    workInfo += "货物";
+//    workInfo += rfidCardReadInfo.getData();
 
-    qDebug() << workInfo;
+//    qDebug() << workInfo;
+
+    workInfo = rfidCardReadInfo.getByteArrayFromJson();
 
     ui->textEdit->append(workInfo);
     //自动显示到文本末尾

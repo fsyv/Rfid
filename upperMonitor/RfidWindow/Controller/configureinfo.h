@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QMutex>
 #include <QTextCodec>
+#include <QUrl>
 
 #include <qDebug>
 
@@ -16,6 +17,7 @@ class ConfigureInfo
 public:
     static ConfigureInfo* getInstance();
     static QString getRfidDescription();
+    static QUrl getSocketServer();
 
 private:
     ConfigureInfo();

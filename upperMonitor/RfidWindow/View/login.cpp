@@ -5,12 +5,16 @@
 #include <QMessageBox>
 #include <qDebug>
 
+#include "Controller/connectionservice.h"
+
 Login::Login(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Login)
 {
     ui->setupUi(this);
     rfidMainWindow = 0;
+
+    ConnectionService *service = new ConnectionService(this);
 }
 
 Login::~Login()
@@ -96,4 +100,9 @@ void Login::employeeWidgetLogout()
     delete rfidMainWindow;
     rfidMainWindow = 0;
     this->show();
+}
+
+void Login::on_exitPushButton_clicked()
+{
+    close();
 }

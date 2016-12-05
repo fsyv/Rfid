@@ -5,8 +5,8 @@
 
 OpreatingThread::OpreatingThread(QString comName):
     QThread(),
-    currentCardID(""),
-    preCardID("")
+    preCardID(""),
+    currentCardID("")
 {
     comName.remove("COM");
     machine = new RfidOpreatingMachine(comName.toInt());

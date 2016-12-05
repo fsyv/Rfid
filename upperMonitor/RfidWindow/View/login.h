@@ -35,6 +35,8 @@ private slots:
     void on_LoginPushButton_clicked();
     void employeeWidgetLogout();
 
+    void on_exitPushButton_clicked();
+
 private:
     Ui::Login *ui;
     QString userName;

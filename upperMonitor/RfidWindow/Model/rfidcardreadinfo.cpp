@@ -5,6 +5,8 @@ RfidCardReadInfo::RfidCardReadInfo()
     this->data = "";
     this->cardID = "";
     this->dateTime = QDateTime::currentDateTime();
+
+    toJson();
 }
 
 RfidCardReadInfo::RfidCardReadInfo(QString data, QString cardID, QDateTime dateTime)
@@ -13,13 +15,12 @@ RfidCardReadInfo::RfidCardReadInfo(QString data, QString cardID, QDateTime dateT
     this->cardID = cardID;
     this->dateTime = dateTime;
 
+    toJson();
 }
 
 RfidCardReadInfo::RfidCardReadInfo(const RfidCardReadInfo &rfidCardReadInfo)
 {
-    this->data = rfidCardReadInfo.getData();
-    this->cardID = rfidCardReadInfo.getCardID();
-    this->dateTime = rfidCardReadInfo.getDateTime();
+    byteArrayFromJson = rfidCardReadInfo.getByteArrayFromJson();
 }
 
 RfidCardReadInfo::~RfidCardReadInfo()
@@ -27,19 +28,25 @@ RfidCardReadInfo::~RfidCardReadInfo()
 
 }
 
-QDateTime RfidCardReadInfo::getDateTime() const
+QByteArray RfidCardReadInfo::getByteArrayFromJson() const
 {
-    return dateTime;
+    return byteArrayFromJson;
 }
 
-QString RfidCardReadInfo::getCardID() const
+/**
+ * 数据变为Json
+ */
+void RfidCardReadInfo::toJson()
 {
-    return cardID;
+    QJsonObject json;
+    json.insert("data", QJsonValue(data));
+    json.insert("cardID", QJsonValue(cardID));
+    json.insert("time", QJsonValue(dateTime.toString()));
+
+    QJsonDocument document;
+    document.setObject(json);
+    byteArrayFromJson = document.toJson(QJsonDocument::Compact);
 }
 
-QString RfidCardReadInfo::getData() const
-{
-    return data;
-}
 
 

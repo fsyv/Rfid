@@ -20,7 +20,6 @@ SOURCES += main.cpp \
     View/rfidmainwindow.cpp \
     Controller/connectionserviceerror.cpp \
     Controller/commodity.cpp \
-    Controller/connectionserviceviatcp.cpp \
     Controller/qconnectionthread.cpp \
     View/login.cpp \
     View/widgeterror.cpp \
@@ -35,7 +34,6 @@ HEADERS  += \
     View/rfidmainwindow.h \
     Controller/connectionserviceerror.h \
     Controller/commodity.h \
-    Controller/connectionserviceviatcp.h \
     Controller/qconnectionthread.h \
     View/login.h \
     View/widgeterror.h \

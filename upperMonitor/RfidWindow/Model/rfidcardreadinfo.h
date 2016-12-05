@@ -3,6 +3,11 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QByteArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+
+#include <qDebug>
 
 class RfidCardReadInfo
 {
@@ -12,16 +17,18 @@ public:
     explicit RfidCardReadInfo(const RfidCardReadInfo &rfidCardReadInfo);
     virtual ~RfidCardReadInfo();
 
-    QDateTime getDateTime() const;
 
-    QString getCardID() const;
+    QByteArray getByteArrayFromJson() const;
 
-    QString getData() const;
+private:
+    void toJson();
 
 private:
     QString data;
     QString cardID;
     QDateTime dateTime;
+
+    QByteArray byteArrayFromJson;
 };
 
 #endif // RFIDCARDREADINFO_H
