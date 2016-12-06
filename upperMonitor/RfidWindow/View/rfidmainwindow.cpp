@@ -168,27 +168,31 @@ void RfidMainWindow::disconnectCardReader()
 
 void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 {
+    switch(currentWorkType){
+    case IN_OF_The_LIBRARY:
+        workInfo += "入库";
+        break;
+    case OUT_OF_The_LIBRARY:
+        workInfo += "出库";
+        break;
+    case NO_WORK_TYPE:
+        QMessageBox::critical(NULL, \
+                              "提示", \
+                              "请先设置入库还是出库！！！", \
+                              QMessageBox::OK);
+        return;
+    default:
+        break;
+    }
+
     QString workInfo("");
 
-//    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
+    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
 
-//    switch(currentWorkType){
-//    case IN_OF_The_LIBRARY:
-//        workInfo += "入库";
-//        break;
-//    case OUT_OF_The_LIBRARY:
-//        workInfo += "出库";
-//        break;
-//    default:
-//        break;
-//    }
+    workInfo += "货物";
+    workInfo += rfidCardReadInfo.getData();
 
-//    workInfo += "货物";
-//    workInfo += rfidCardReadInfo.getData();
-
-//    qDebug() << workInfo;
-
-    workInfo = rfidCardReadInfo.getByteArrayFromJson();
+    qDebug() << workInfo;
 
     ui->textEdit->append(workInfo);
     //自动显示到文本末尾
@@ -197,18 +201,45 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
     ui->textEdit->setTextCursor(cursor);
 }
 
-
-void RfidMainWindow::on_enterRadioButton_clicked()
-{
-    currentWorkType = IN_OF_The_LIBRARY;
-}
-
-void RfidMainWindow::on_outRadioButton_clicked()
-{
-    currentWorkType = OUT_OF_The_LIBRARY;
-}
-
 void RfidMainWindow::on_logoutAction_triggered()
 {
+
+}
+
+void RfidMainWindow::on_enterPushButton_clicked(bool checked)
+{
+    if(checked)
+    {
+        currentWorkType = IN_OF_The_LIBRARY;
+        ui->enterPushButton->setText("停止入库");
+        ui->outPushButton->setDisabled(true);
+        ui->textEdit->clear();
+        ui->textEdit->setText(QString("开始入库时间: ") + QTime::currentTime().toString());
+    }
+    else
+    {
+        currentWorkType = NO_WORK_TYPE;
+        ui->enterPushButton->setText("入  库");
+        ui->outPushButton->setDisabled(false);
+        ui->textEdit->append(QString("停止入库时间: ") + QTime::currentTime().toString());
+    }
+}
+
+void RfidMainWindow::on_outPushButton_clicked(bool checked)
+{
+    if(checked)
+    {
+        currentWorkType = OUT_OF_The_LIBRARY;
+        ui->outPushButton->setText("停止出库");
+        ui->enterPushButton->setDisabled(true);
+        ui->textEdit->setText(QString("开始出库时间: ") + QTime::currentTime().toString());
+    }
+    else
+    {
+        currentWorkType = NO_WORK_TYPE;
+        ui->outPushButton->setText("出  库");
+        ui->enterPushButton->setDisabled(false);
+        ui->textEdit->append(QString("停止出库时间: ") + QTime::currentTime().toString());
+    }
 
 }

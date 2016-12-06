@@ -46,6 +46,8 @@ void RfidCardReadInfo::toJson()
     QJsonDocument document;
     document.setObject(json);
     byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    qDebug() << byteArrayFromJson;
 }
 
 

@@ -24,8 +24,9 @@ private:
     void toJson();
 
 private:
-    QString data;
+    //卡号
     QString cardID;
+    //读卡时间
     QDateTime dateTime;
 
     QByteArray byteArrayFromJson;

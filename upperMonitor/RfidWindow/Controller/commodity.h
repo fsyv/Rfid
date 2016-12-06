@@ -8,22 +8,44 @@
  * @date 2016年11月6日
  * @version 1.0
  */
-class commodity
+class Commodity
 {
 public:
-    explicit commodity(QString name, int inStock);
+    explicit Commodity(QString ID, QString name, int weiget, int price,
+                       QString supplierID, QString supplierName);
+
+
+    QString getID() const;
+    void setID(const QString &value);
 
     QString getName() const;
     void setName(const QString &value);
 
-    int getInStock() const;
-    void setInStock(int value);
+    int getWeiget() const;
+    void setWeiget(int value);
+
+    int getPrice() const;
+    void setPrice(int value);
+
+    QString getSupplierID() const;
+    void setSupplierID(const QString &value);
+
+    QString getSupplierName() const;
+    void setSupplierName(const QString &value);
 
 private:
-    //商品名字
+    //商品ID
+    QString ID;
+    //商品名称
     QString name;
-    //商品库存
-    int inStock;
+    //商品重量
+    int weiget;
+    //商品单价
+    int price;
+    //供应商ID
+    QString supplierID;
+    //供应商名字
+    QString supplierName;
 };
 
 #endif // COMMODITY_H

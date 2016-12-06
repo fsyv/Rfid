@@ -54,7 +54,6 @@ private:
         NO_WORK_TYPE = 0,            //没有设置工作状态
         IN_OF_The_LIBRARY , //入库
         OUT_OF_The_LIBRARY     //出库
-
     };
 
     Ui::RfidMainWindow *ui;
@@ -77,9 +76,9 @@ protected:
     //注销
     void logout();
 private slots:
-    void on_enterRadioButton_clicked();
-    void on_outRadioButton_clicked();
     void on_logoutAction_triggered();
+    void on_enterPushButton_clicked(bool checked);
+    void on_outPushButton_clicked(bool checked);
 };
 
 #endif // RFIDMAINWINDOW_H
