@@ -15,14 +15,25 @@ ConnectionService::ConnectionService(QObject *parent):
 
     clientTcpSocket->connectToHost(serverUrl.host(), serverUrl.port());
 
-    QByteArray byteArray("{\"cardID\":\"7b0362bb\",\"data\":\"\xE6\xA3\x8D\",\"time\":\"\xE5\x91\xA8\xE4\xB8\x80 \xE5\x8D\x81\xE4\xBA\x8C\xE6\x9C\x88 5 22:04:19 2016\"}");
+    //    QByteArray byteArray("{\"cardID\":\"7b0362bb\",\"data\":\"\xE6\xA3\x8D\",\"time\":\"\xE5\x91\xA8\xE4\xB8\x80 \xE5\x8D\x81\xE4\xBA\x8C\xE6\x9C\x88 5 22:04:19 2016\"}");
 
-    clientTcpSocket->write(byteArray);
+    //    clientTcpSocket->write(byteArray);
 }
 
 ConnectionService::~ConnectionService()
 {
-    
+    if(clientTcpSocket->isOpen())
+        clientTcpSocket->close();
+
+    if(clientTcpSocket)
+        delete clientTcpSocket;
+    clientTcpSocket = 0;
+}
+
+void ConnectionService::sendMessage(QByteArray byteArray)
+{
+    qDebug()<< byteArray;
+    clientTcpSocket->write(byteArray);
 }
 
 void ConnectionService::readMessage()
@@ -33,5 +44,6 @@ void ConnectionService::readMessage()
 void ConnectionService::displayError(QAbstractSocket::SocketError)
 {
     qDebug()<<clientTcpSocket->errorString();
-    clientTcpSocket->close();
+    if(clientTcpSocket->isOpen())
+        clientTcpSocket->close();
 }

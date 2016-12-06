@@ -11,6 +11,7 @@ class Login;
 QT_BEGIN_NAMESPACE
 class QMessageBox;
 class RfidMainWindow;
+class ConnectionService;
 QT_END_NAMESPACE
 
 class Login : public QWidget
@@ -42,6 +43,8 @@ private:
     QString userName;
     QString userPass;
     RfidMainWindow *rfidMainWindow;
+    //链接服务端
+    ConnectionService *service;
 };
 
 #endif // LOGIN_H

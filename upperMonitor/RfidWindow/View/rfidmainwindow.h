@@ -41,6 +41,8 @@ signals:
     void devDisConnection();
     //退出
     void exitWidget();
+    //发送消息
+    void sendMessage(QByteArray);
 
 private slots:
     //连接与断开读卡器

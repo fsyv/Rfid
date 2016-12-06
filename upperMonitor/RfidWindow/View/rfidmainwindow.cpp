@@ -168,6 +168,7 @@ void RfidMainWindow::disconnectCardReader()
 
 void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 {
+    QString workInfo("");
     switch(currentWorkType){
     case IN_OF_The_LIBRARY:
         workInfo += "入库";
@@ -179,22 +180,17 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
         QMessageBox::critical(NULL, \
                               "提示", \
                               "请先设置入库还是出库！！！", \
-                              QMessageBox::OK);
+                              QMessageBox::Ok);
         return;
     default:
         break;
     }
 
-    QString workInfo("");
+     QString info = rfidCardReadInfo.toString();
 
-    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
+    qDebug() << info;
 
-    workInfo += "货物";
-    workInfo += rfidCardReadInfo.getData();
-
-    qDebug() << workInfo;
-
-    ui->textEdit->append(workInfo);
+    ui->textEdit->append(info);
     //自动显示到文本末尾
     QTextCursor cursor =  ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::End);

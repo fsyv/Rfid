@@ -11,8 +11,10 @@
 class Commodity
 {
 public:
-    explicit Commodity(QString ID, QString name, int weiget, int price,
-                       QString supplierID, QString supplierName);
+    explicit Commodity(QString ID = "", QString name = "", int weiget = 0, int price = 0,
+                       QString supplierID = "", QString supplierName = "");
+
+    Commodity(const Commodity &commodity);
 
 
     QString getID() const;

@@ -15,6 +15,16 @@ Commodity::Commodity(QString ID, QString name, int weiget, int price, QString su
     setSupplierName(supplierName);
 }
 
+Commodity::Commodity(const Commodity &commodity)
+{
+    this->ID = commodity.getID();
+    this->name = commodity.getName();
+    this->weiget = commodity.getWeiget();
+    this->price = commodity.getPrice();
+    this->supplierID = commodity.getSupplierID();
+    this->supplierName = commodity.getSupplierID();
+}
+
 QString Commodity::getID() const
 {
     return ID;
@@ -25,15 +35,6 @@ void Commodity::setID(const QString &value)
     ID = value;
 }
 
-QString Commodity::getName() const
-{
-    return name;
-}
-
-void Commodity::setName(const QString &value)
-{
-    name = value;
-}
 
 QString Commodity::getName() const
 {
@@ -85,12 +86,3 @@ void Commodity::setSupplierName(const QString &value)
     supplierName = value;
 }
 
-int Commodity::getInStock() const
-{
-    return inStock;
-}
-
-void Commodity::setInStock(int value)
-{
-    inStock = value;
-}

@@ -14,11 +14,16 @@ Login::Login(QWidget *parent) :
     ui->setupUi(this);
     rfidMainWindow = 0;
 
-    ConnectionService *service = new ConnectionService(this);
+    service = new ConnectionService(this);
 }
 
 Login::~Login()
 {
+    if(service)
+        delete service;
+
+    service = 0;
+
     delete ui;
 }
 
@@ -57,6 +62,7 @@ void Login::employeeWidget()
         throw new WidgetError("内存不足", WidgetError::MemoryError);
     }
 
+    connect(rfidMainWindow, SIGNAL(sendMessage(QByteArray)), service, SLOT(sendMessage(QByteArray)));
     connect(rfidMainWindow, SIGNAL(exitWidget()), this, SLOT(employeeWidgetLogout()));
     rfidMainWindow->show();
 

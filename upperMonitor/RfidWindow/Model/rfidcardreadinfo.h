@@ -7,29 +7,37 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include "Controller/commodity.h"
+
 #include <qDebug>
 
 class RfidCardReadInfo
 {
 public:
     explicit RfidCardReadInfo();
-    explicit RfidCardReadInfo(QString data, QString cardID, QDateTime dateTime);
+    explicit RfidCardReadInfo(QString cardData, const QString &cardID, const QDateTime &dateTime);
+    explicit RfidCardReadInfo(const QString &cardID, const QDateTime &dateTime, const Commodity &commodityValue);
     explicit RfidCardReadInfo(const RfidCardReadInfo &rfidCardReadInfo);
     virtual ~RfidCardReadInfo();
 
+    QString getCardID() const;
+    void setCardID(const QString &value);
 
-    QByteArray getByteArrayFromJson() const;
+    QDateTime getDateTime() const;
+    void setDateTime(const QDateTime &value);
 
-private:
-    void toJson();
+    Commodity getCommodity() const;
+    void setCommodity(const Commodity &value);
+
+    QString toString() const;
 
 private:
     //卡号
     QString cardID;
     //读卡时间
     QDateTime dateTime;
-
-    QByteArray byteArrayFromJson;
+    //商品
+    Commodity commodity;
 };
 
 #endif // RFIDCARDREADINFO_H
