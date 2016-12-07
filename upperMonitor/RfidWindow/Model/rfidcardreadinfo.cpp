@@ -8,27 +8,28 @@ RfidCardReadInfo::RfidCardReadInfo()
 
 RfidCardReadInfo::RfidCardReadInfo(QString cardData, const QString &cardID, const QDateTime &dateTime)
 {
-    this->commodity.setID(cardData.left(0));
-    cardData.remove(0, 1);
     qDebug() << cardData;
+    this->commodity.setID(cardData.left(1));
+    cardData.remove(0, 1);
 
     this->commodity.setName(cardData.left(1));
-    cardData.remove(0, 2);
-    qDebug() << cardData;
-
-    this->commodity.setWeiget(cardData.left(0).toInt());
     cardData.remove(0, 1);
     qDebug() << cardData;
 
-    this->commodity.setPrice(cardData.left(0).toInt());
+    this->commodity.setWeiget(cardData.left(1).toInt());
     cardData.remove(0, 1);
     qDebug() << cardData;
 
-    this->commodity.setSupplierName(cardData.left(0));
+    this->commodity.setPrice(cardData.left(1).toInt());
     cardData.remove(0, 1);
     qDebug() << cardData;
 
-    this->commodity.setSupplierID(cardData.left(3));
+    this->commodity.setSupplierID(cardData.left(1));
+    cardData.remove(0, 1);
+    qDebug() << cardData;
+
+    this->commodity.setSupplierName(cardData);
+    qDebug() << cardData;
 
 
     this->cardID = cardID;

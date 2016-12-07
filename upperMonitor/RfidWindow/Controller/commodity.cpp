@@ -22,7 +22,7 @@ Commodity::Commodity(const Commodity &commodity)
     this->weiget = commodity.getWeiget();
     this->price = commodity.getPrice();
     this->supplierID = commodity.getSupplierID();
-    this->supplierName = commodity.getSupplierID();
+    this->supplierName = commodity.getSupplierName();
 }
 
 QString Commodity::getID() const

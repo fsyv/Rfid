@@ -32,12 +32,14 @@ ConnectionService::~ConnectionService()
 
 void ConnectionService::sendMessage(QByteArray byteArray)
 {
+    qDebug() << "发送消息：";
     qDebug()<< byteArray;
     clientTcpSocket->write(byteArray);
 }
 
 void ConnectionService::readMessage()
 {
+    qDebug() << "收到消息";
     qDebug() << clientTcpSocket->readAll();
 }
 

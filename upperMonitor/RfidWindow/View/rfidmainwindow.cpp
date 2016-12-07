@@ -152,7 +152,6 @@ void RfidMainWindow::toJson()
     for(cur = currentRecInfo.begin(); cur != currentRecInfo.end(); ++cur)
     {
         QJsonObject commodityObject;
-        jsonObject->insert("Commodity" + QString::number(index++), QJsonValue(commodityObject));
 
         commodityObject.insert("Count", cur.value());
         commodityObject.insert("ID", cur.key().getCommodity().getID());
@@ -161,6 +160,10 @@ void RfidMainWindow::toJson()
         commodityObject.insert("Weiget", cur.key().getCommodity().getWeiget());
         commodityObject.insert("SupplierID", cur.key().getCommodity().getSupplierID());
         commodityObject.insert("SupplierName", cur.key().getCommodity().getSupplierName());
+
+        jsonObject->insert("Commodity" + QString::number(index++), commodityObject);
+
+        qDebug() << "commodityObject" <<commodityObject;
     }
 }
 
@@ -230,9 +233,16 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 
     if(currentRecInfo.keys().contains(rfidCardReadInfo))
         //currentRecInfo[rfidCardReadInfo] = ;
-        currentRecInfo.insert(rfidCardReadInfo, currentRecInfo.value(rfidCardReadInfo));
+    {
+        qDebug() << currentRecInfo.value(rfidCardReadInfo);
+        currentRecInfo.insert(rfidCardReadInfo, currentRecInfo.value(rfidCardReadInfo) + 1);
+    }
     else
+    {
+        qDebug() << "新的商品~~~";
         currentRecInfo.insert(rfidCardReadInfo, 1);
+    }
+
 
     ui->textEdit->append(info);
     //自动显示到文本末尾
@@ -287,13 +297,9 @@ void RfidMainWindow::on_enterPushButton_clicked(bool checked)
 
         toJson();
 
-        qDebug() << jsonObject;
-
         QJsonDocument document;
         document.setObject(*jsonObject);
         QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
-
-        qDebug() << byteArrayFromJson;
 
         emit sendMessage(byteArrayFromJson);
 
@@ -327,6 +333,8 @@ void RfidMainWindow::on_outPushButton_clicked(bool checked)
         ui->outPushButton->setText("出  库");
         ui->enterPushButton->setDisabled(false);
         ui->textEdit->append(QString("停止出库时间: ") + QTime::currentTime().toString());
+
+        jsonObject->insert("EndTime", QTime::currentTime().toString());
 
         toJson();
 
