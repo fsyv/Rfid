@@ -22,6 +22,9 @@ public:
 private:
     QTcpSocket *clientTcpSocket;
 
+public slots:
+    void sendMessage(QByteArray byteArray);
+
 private slots:
     void readMessage();
     void displayError(QAbstractSocket::SocketError);

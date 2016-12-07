@@ -5,7 +5,7 @@
 #include <QMessageBox>
 #include <qDebug>
 
-#include "Controller/qconnectionthread.h"
+#include "Controller/connectionservice.h"
 
 Login::Login(QWidget *parent) :
     QWidget(parent),
@@ -14,18 +14,15 @@ Login::Login(QWidget *parent) :
     ui->setupUi(this);
     rfidMainWindow = 0;
 
-    connetionThread = new QConnectionThread();
-    connetionThread->start();
+    service = new ConnectionService(this);
 }
 
 Login::~Login()
 {
-    connetionThread->quit();
-    connetionThread->wait();
+    if(service)
+        delete service;
 
-    if(connetionThread)
-        delete connetionThread;
-    connetionThread = 0;
+    service = 0;
 
     delete ui;
 }
@@ -65,7 +62,11 @@ void Login::employeeWidget()
         throw new WidgetError("内存不足", WidgetError::MemoryError);
     }
 
+    connect(rfidMainWindow, SIGNAL(sendMessage(QByteArray)), service, SLOT(sendMessage(QByteArray)));
     connect(rfidMainWindow, SIGNAL(exitWidget()), this, SLOT(employeeWidgetLogout()));
+
+    rfidMainWindow->setOperatorName(userName);
+
     rfidMainWindow->show();
 
 }

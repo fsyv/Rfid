@@ -9,6 +9,9 @@
 #include <QCloseEvent>
 #include <QTextCursor>
 #include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
 
 //USB抽插事件用的
 #include <dbt.h>
@@ -17,6 +20,7 @@
 
 #include "Model/rfidoperating.h"
 #include "Controller/connectionservice.h"
+#include "Model/rfidcardreadinfo.h"
 
 namespace Ui {
 class RfidMainWindow;
@@ -24,7 +28,6 @@ class RfidMainWindow;
 
 QT_BEGIN_NAMESPACE
 class OpreatingThread;
-class RfidCardReadInfo;
 QT_END_NAMESPACE
 
 class RfidMainWindow : public QMainWindow
@@ -35,12 +38,18 @@ public:
     explicit RfidMainWindow(QWidget *parent = 0);
     ~RfidMainWindow();
 
+    void setOperatorName(const QString &value);
+
+    QString getOperatorName() const;
+
 signals:
     //use设备连接与断开的信号
     void devConnection();
     void devDisConnection();
     //退出
     void exitWidget();
+    //发送消息
+    void sendMessage(QByteArray);
 
 private slots:
     //连接与断开读卡器
@@ -54,7 +63,6 @@ private:
         NO_WORK_TYPE = 0,            //没有设置工作状态
         IN_OF_The_LIBRARY , //入库
         OUT_OF_The_LIBRARY     //出库
-
     };
 
     Ui::RfidMainWindow *ui;
@@ -64,6 +72,10 @@ private:
     QMap<QString, OpreatingThread *> readers;
     //当前是出库还是入库
     ReadCardWorkType currentWorkType;
+
+    QMap<RfidCardReadInfo, int> currentRecInfo;
+    QJsonObject *jsonObject;
+    QString operatorName;
 
 protected:
     //USB抽插事件
@@ -76,10 +88,16 @@ protected:
     void revomeComPort(QString comPortName);
     //注销
     void logout();
+    //得到一串随机字符串
+    QString getRandString();
+    //保存的数据转换为json
+    void toJson();
+
 private slots:
-    void on_enterRadioButton_clicked();
-    void on_outRadioButton_clicked();
     void on_logoutAction_triggered();
+    void on_enterPushButton_clicked(bool checked);
+    void on_outPushButton_clicked(bool checked);
+    void on_queryAction_triggered();
 };
 
 #endif // RFIDMAINWINDOW_H

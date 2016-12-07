@@ -3,7 +3,6 @@
 #include "Controller/connectionservice.h"
 
 #include "Model/opreatingthread.h"
-#include "Model/rfidcardreadinfo.h"
 #include "Controller/configureinfo.h"
 
 Q_DECLARE_METATYPE(RfidCardReadInfo)
@@ -126,6 +125,45 @@ void RfidMainWindow::logout()
     emit exitWidget();
 }
 
+QString RfidMainWindow::getRandString()
+{
+    int max = 8;
+    QString tmp = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+    QString str("");
+    str += QString::number(QDate::currentDate().year());
+    str += QString::number(QDate::currentDate().month());
+
+    qDebug() << str;
+
+    QTime t = QTime::currentTime();
+    qsrand(t.msec() + t.second() * 1000);
+    for(int i = 0; i < max; ++i)
+        str += tmp.at(qrand() % tmp.length());
+
+    return str;
+}
+
+void RfidMainWindow::toJson()
+{
+    jsonObject->insert("Quantity", currentRecInfo.count());
+
+    int index = 0;
+    QMap<RfidCardReadInfo, int>::iterator cur;
+    for(cur = currentRecInfo.begin(); cur != currentRecInfo.end(); ++cur)
+    {
+        QJsonObject commodityObject;
+        jsonObject->insert("Commodity" + QString::number(index++), QJsonValue(commodityObject));
+
+        commodityObject.insert("Count", cur.value());
+        commodityObject.insert("ID", cur.key().getCommodity().getID());
+        commodityObject.insert("Name", cur.key().getCommodity().getName());
+        commodityObject.insert("Price", cur.key().getCommodity().getPrice());
+        commodityObject.insert("Weiget", cur.key().getCommodity().getWeiget());
+        commodityObject.insert("SupplierID", cur.key().getCommodity().getSupplierID());
+        commodityObject.insert("SupplierName", cur.key().getCommodity().getSupplierName());
+    }
+}
+
 /**
  * @brief 串口连接响应槽
  */
@@ -169,46 +207,152 @@ void RfidMainWindow::disconnectCardReader()
 void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 {
     QString workInfo("");
+    switch(currentWorkType){
+    case IN_OF_The_LIBRARY:
+        workInfo += "入库";
+        break;
+    case OUT_OF_The_LIBRARY:
+        workInfo += "出库";
+        break;
+    case NO_WORK_TYPE:
+        QMessageBox::critical(NULL, \
+                              "提示", \
+                              "请先设置入库还是出库！！！", \
+                              QMessageBox::Ok);
+        return;
+    default:
+        break;
+    }
 
-//    workInfo += rfidCardReadInfo.getDateTime().toString() + "\n";
+    QString info = rfidCardReadInfo.toString();
 
-//    switch(currentWorkType){
-//    case IN_OF_The_LIBRARY:
-//        workInfo += "入库";
-//        break;
-//    case OUT_OF_The_LIBRARY:
-//        workInfo += "出库";
-//        break;
-//    default:
-//        break;
-//    }
+    qDebug() << info;
 
-//    workInfo += "货物";
-//    workInfo += rfidCardReadInfo.getData();
+    if(currentRecInfo.keys().contains(rfidCardReadInfo))
+        //currentRecInfo[rfidCardReadInfo] = ;
+        currentRecInfo.insert(rfidCardReadInfo, currentRecInfo.value(rfidCardReadInfo));
+    else
+        currentRecInfo.insert(rfidCardReadInfo, 1);
 
-//    qDebug() << workInfo;
-
-    workInfo = rfidCardReadInfo.getByteArrayFromJson();
-
-    ui->textEdit->append(workInfo);
+    ui->textEdit->append(info);
     //自动显示到文本末尾
     QTextCursor cursor =  ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->textEdit->setTextCursor(cursor);
 }
 
-
-void RfidMainWindow::on_enterRadioButton_clicked()
+QString RfidMainWindow::getOperatorName() const
 {
-    currentWorkType = IN_OF_The_LIBRARY;
+    return operatorName;
 }
 
-void RfidMainWindow::on_outRadioButton_clicked()
+void RfidMainWindow::setOperatorName(const QString &value)
 {
-    currentWorkType = OUT_OF_The_LIBRARY;
+    operatorName = value;
 }
 
 void RfidMainWindow::on_logoutAction_triggered()
 {
 
+}
+
+void RfidMainWindow::on_enterPushButton_clicked(bool checked)
+{
+    if(checked)
+    {
+        currentWorkType = IN_OF_The_LIBRARY;
+        ui->enterPushButton->setText("停止入库");
+        ui->outPushButton->setDisabled(true);
+        ui->textEdit->clear();
+        ui->textEdit->setText(QString("开始入库时间: ") + QTime::currentTime().toString());
+
+        currentRecInfo.clear();
+
+        jsonObject = new QJsonObject();
+
+        jsonObject->insert("MessageType", "IN");
+        jsonObject->insert("StartTime", QTime::currentTime().toString());
+        jsonObject->insert("OperatorName", operatorName);
+        //批次号
+        jsonObject->insert("BatchNumber", getRandString());
+    }
+    else
+    {
+        currentWorkType = NO_WORK_TYPE;
+        ui->enterPushButton->setText("入  库");
+        ui->outPushButton->setDisabled(false);
+        ui->textEdit->append(QString("停止入库时间: ") + QTime::currentTime().toString());
+
+        jsonObject->insert("EndTime", QTime::currentTime().toString());
+
+        toJson();
+
+        qDebug() << jsonObject;
+
+        QJsonDocument document;
+        document.setObject(*jsonObject);
+        QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+        qDebug() << byteArrayFromJson;
+
+        emit sendMessage(byteArrayFromJson);
+
+        delete jsonObject;
+        jsonObject = 0;
+    }
+}
+
+void RfidMainWindow::on_outPushButton_clicked(bool checked)
+{
+    if(checked)
+    {
+        currentWorkType = OUT_OF_The_LIBRARY;
+        ui->outPushButton->setText("停止出库");
+        ui->enterPushButton->setDisabled(true);
+        ui->textEdit->setText(QString("开始出库时间: ") + QTime::currentTime().toString());
+
+        currentRecInfo.clear();
+
+        jsonObject = new QJsonObject();
+
+        jsonObject->insert("MessageType", "OUT");
+        jsonObject->insert("StartTime", QTime::currentTime().toString());
+        jsonObject->insert("OperatorName", operatorName);
+        //批次号
+        jsonObject->insert("BatchNumber", getRandString());
+    }
+    else
+    {
+        currentWorkType = NO_WORK_TYPE;
+        ui->outPushButton->setText("出  库");
+        ui->enterPushButton->setDisabled(false);
+        ui->textEdit->append(QString("停止出库时间: ") + QTime::currentTime().toString());
+
+        toJson();
+
+        QJsonDocument document;
+        document.setObject(*jsonObject);
+        QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+        qDebug() << byteArrayFromJson;
+
+        emit sendMessage(byteArrayFromJson);
+
+        qDebug() << jsonObject;
+        delete jsonObject;
+        jsonObject = 0;
+    }
+
+}
+
+void RfidMainWindow::on_queryAction_triggered()
+{
+    QJsonObject json;
+    json.insert("MessageType", "Query");
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    emit sendMessage(byteArrayFromJson);
 }

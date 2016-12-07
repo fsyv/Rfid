@@ -1,27 +1,88 @@
 #include "commodity.h"
 
-commodity::commodity(QString name, int inStock)
+Commodity::Commodity(QString ID, QString name, int weiget, int price, QString supplierID, QString supplierName)
 {
-    this->name = name;
-    this->inStock = inStock;
+    setID(ID);
+
+    setName(name);
+
+    setWeiget(weiget);
+
+    setPrice(price);
+
+    setSupplierID(supplierID);
+
+    setSupplierName(supplierName);
 }
 
-QString commodity::getName() const
+Commodity::Commodity(const Commodity &commodity)
+{
+    this->ID = commodity.getID();
+    this->name = commodity.getName();
+    this->weiget = commodity.getWeiget();
+    this->price = commodity.getPrice();
+    this->supplierID = commodity.getSupplierID();
+    this->supplierName = commodity.getSupplierID();
+}
+
+QString Commodity::getID() const
+{
+    return ID;
+}
+
+void Commodity::setID(const QString &value)
+{
+    ID = value;
+}
+
+
+QString Commodity::getName() const
 {
     return name;
 }
 
-void commodity::setName(const QString &value)
+void Commodity::setName(const QString &value)
 {
     name = value;
 }
 
-int commodity::getInStock() const
+int Commodity::getWeiget() const
 {
-    return inStock;
+    return weiget;
 }
 
-void commodity::setInStock(int value)
+void Commodity::setWeiget(int value)
 {
-    inStock = value;
+    weiget = value;
 }
+
+int Commodity::getPrice() const
+{
+    return price;
+}
+
+void Commodity::setPrice(int value)
+{
+    price = value;
+}
+
+QString Commodity::getSupplierID() const
+{
+    return supplierID;
+}
+
+void Commodity::setSupplierID(const QString &value)
+{
+    supplierID = value;
+}
+
+QString Commodity::getSupplierName() const
+{
+    return supplierName;
+}
+
+void Commodity::setSupplierName(const QString &value)
+{
+    supplierName = value;
+}
+
