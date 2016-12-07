@@ -5,7 +5,7 @@
 #include <QMessageBox>
 #include <qDebug>
 
-#include "Controller/connectionservice.h"
+#include "Controller/qconnectionthread.h"
 
 Login::Login(QWidget *parent) :
     QWidget(parent),
@@ -14,11 +14,19 @@ Login::Login(QWidget *parent) :
     ui->setupUi(this);
     rfidMainWindow = 0;
 
-    ConnectionService *service = new ConnectionService(this);
+    connetionThread = new QConnectionThread();
+    connetionThread->start();
 }
 
 Login::~Login()
 {
+    connetionThread->quit();
+    connetionThread->wait();
+
+    if(connetionThread)
+        delete connetionThread;
+    connetionThread = 0;
+
     delete ui;
 }
 
