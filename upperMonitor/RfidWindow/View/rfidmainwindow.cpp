@@ -253,8 +253,8 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 
 void RfidMainWindow::receiveQueryResult(QJsonObject obj)
 {
-    QueryResult queryResult;
-    queryResult.show();
+    QueryResult *queryResult = new QueryResult();
+    queryResult->show();
 }
 
 void RfidMainWindow::receiveInResult(QJsonObject obj)

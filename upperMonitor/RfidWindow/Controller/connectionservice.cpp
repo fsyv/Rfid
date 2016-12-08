@@ -22,8 +22,9 @@ ConnectionService::ConnectionService(QObject *parent):
 
 ConnectionService::~ConnectionService()
 {
-    if(clientTcpSocket->isOpen())
-        clientTcpSocket->close();
+    clientTcpSocket->disconnectFromHost();
+    clientTcpSocket->close();
+
 
     if(clientTcpSocket)
         delete clientTcpSocket;
@@ -81,6 +82,6 @@ void ConnectionService::readMessage()
 void ConnectionService::displayError(QAbstractSocket::SocketError)
 {
     qDebug()<<clientTcpSocket->errorString();
-    if(clientTcpSocket->isOpen())
-        clientTcpSocket->close();
+
+    clientTcpSocket->close();
 }
