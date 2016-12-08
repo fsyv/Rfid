@@ -21,38 +21,53 @@ void AdministratorMainwindow::on_Determine_clicked()
 {
     if(ui->AddRadioButton->isChecked())
     {
-        //        for(int i = 0; i < ui->EmployeeInformation->rowCount();i++)
-        //      {
-        //            ui->EmployeeInformation->setItem(0, 0, new QTableWidgetItem(ui->NumText->text()));
-        //            ui->EmployeeInformation->setItem(0, 1, new QTableWidgetItem(ui->PassText->text()));
 
 
-        int cols = ui->EmployeeInformation->columnCount();
+
         int rows = ui->EmployeeInformation->rowCount();
         qDebug()<<rows;
-        ui->EmployeeInformation->insertRow(rows);
-        for(int i = 0;i < cols;i++)
+
+        if(ui->NumText->text()==NULL || ui->PassText->text()==NULL)
+            QMessageBox::information(NULL,"查询结果","账号或密码均不能空着","返回");
+        else
         {
+            ui->EmployeeInformation->insertRow(rows);
             ui->EmployeeInformation->setItem(rows,0,new QTableWidgetItem(ui->NumText->text()));
             ui->EmployeeInformation->setItem(rows,1,new QTableWidgetItem(ui->PassText->text()));
-
         }
+
         ui->EmployeeInformation->selectRow(rows);
         ui->NumText->clear();
         ui->PassText->clear();
-        //       }
-    }
-    else if(ui->FindRadioButton->isChecked())
-    {
-        QMessageBox::information(NULL,"查询结果","该员工编号为：" + ui->NumText->text() + "\n该员工密码为：" ,"返回");
-    }
-    else if(ui->DelRadioButton->isChecked())
-    {
-    //   int i = ui->EmployeeInformation->setCurrentCell(row,QItemSelectionModel::);
-     int i =ui->EmployeeInformation->currentRow();
-      if(i != -1)
-          ui->EmployeeInformation->removeRow(i);
 
+    }
+    if(ui->FindRadioButton->isChecked())
+    {
+        bool find = false;
+        int row = 0;
+        QList<QTableWidgetItem *>items = ui->EmployeeInformation->selectedItems();
+        for(int i = 0; i < items.count(); ++i)
+        {
+            if(ui->NumText->text() == ui->EmployeeInformation->item(i, 0)->text())
+            {
+                find = true;
+                row = i;
+                break;
+            }
+        }
+        if(find)
+            QMessageBox::information(NULL,"查询结果","该员工编号为：" + ui->EmployeeInformation->item(row, 0)->text() + "\n该员工密码为：" +
+                                     ui->EmployeeInformation->item(row, 1)->text() ,"返回");
+        else
+            QMessageBox::information(NULL,"查询结果","所查找的员工已不在了","返回");
+
+    }
+    if(ui->DelRadioButton->isChecked())
+    {
+
+        bool focus = ui->EmployeeInformation->isItemSelected(ui->EmployeeInformation->currentItem());
+        if(focus)
+            ui->EmployeeInformation->removeRow(ui->EmployeeInformation->currentItem()->row());
     }
 }
 
