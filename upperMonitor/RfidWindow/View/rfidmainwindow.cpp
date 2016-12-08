@@ -353,10 +353,54 @@ void RfidMainWindow::on_outPushButton_clicked(bool checked)
 
 }
 
-void RfidMainWindow::on_queryAction_triggered()
+void RfidMainWindow::on_obligationQueryAction_triggered()
 {
     QJsonObject json;
     json.insert("MessageType", "Query");
+    //库存查询
+    json.insert("QueryType", "Obligation");
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    emit sendMessage(byteArrayFromJson);
+}
+
+void RfidMainWindow::on_inGoodsQuery_triggered()
+{
+    QJsonObject json;
+    json.insert("MessageType", "Query");
+    //入库查询
+    json.insert("QueryType", "InGoods");
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    emit sendMessage(byteArrayFromJson);
+}
+
+void RfidMainWindow::on_outGoodsQuery_triggered()
+{
+    QJsonObject json;
+    json.insert("MessageType", "Query");
+    //出库查询
+    json.insert("QueryType", "OutGoods");
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    emit sendMessage(byteArrayFromJson);
+}
+
+void RfidMainWindow::on_supplierQuery_triggered()
+{
+    QJsonObject json;
+    json.insert("MessageType", "Query");
+    //供应商查询
+    json.insert("QueryType", "Supplier");
 
     QJsonDocument document;
     document.setObject(json);

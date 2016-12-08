@@ -94,7 +94,14 @@
     <property name="title">
      <string>查询</string>
     </property>
-    <addaction name="queryAction"/>
+    <addaction name="obligationQueryAction"/>
+    <addaction name="separator"/>
+    <addaction name="supplierQuery"/>
+    <addaction name="separator"/>
+    <addaction name="inGoodsQuery"/>
+    <addaction name="separator"/>
+    <addaction name="outGoodsQuery"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -131,9 +138,9 @@
     <string>入库</string>
    </property>
   </action>
-  <action name="queryAction">
+  <action name="obligationQueryAction">
    <property name="text">
-    <string>查询</string>
+    <string>库存查询</string>
    </property>
   </action>
   <action name="logoutAction">
@@ -149,6 +156,21 @@
   <action name="aboutSystemAction">
    <property name="text">
     <string>关于本系统</string>
+   </property>
+  </action>
+  <action name="supplierQuery">
+   <property name="text">
+    <string>供应商查询</string>
+   </property>
+  </action>
+  <action name="inGoodsQuery">
+   <property name="text">
+    <string>入库查询</string>
+   </property>
+  </action>
+  <action name="outGoodsQuery">
+   <property name="text">
+    <string>出库查询</string>
    </property>
   </action>
  </widget>

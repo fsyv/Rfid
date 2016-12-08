@@ -12,6 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = RfidWindow
 TEMPLATE = app
+RC_FILE = logo/logo.rc
 
 
 SOURCES += main.cpp \
@@ -26,7 +27,8 @@ SOURCES += main.cpp \
     Model/rfidopreatingmachine.cpp \
     Model/opreatingthread.cpp \
     Model/rfidcardreadinfo.cpp \
-    Controller/configureinfo.cpp
+    Controller/configureinfo.cpp \
+    View/queryresult.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -40,8 +42,14 @@ HEADERS  += \
     Model/rfidopreatingmachine.h \
     Model/opreatingthread.h \
     Model/rfidcardreadinfo.h \
-    Controller/configureinfo.h
+    Controller/configureinfo.h \
+    View/queryresult.h
 
 FORMS    += \
     View/rfidmainwindow.ui \
-    View/login.ui
+    View/login.ui \
+    View/queryresult.ui
+
+DISTFILES += \
+    logo/logo.ico \
+    logo/logo.rc

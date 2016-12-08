@@ -97,7 +97,10 @@ private slots:
     void on_logoutAction_triggered();
     void on_enterPushButton_clicked(bool checked);
     void on_outPushButton_clicked(bool checked);
-    void on_queryAction_triggered();
+    void on_obligationQueryAction_triggered();
+    void on_inGoodsQuery_triggered();
+    void on_outGoodsQuery_triggered();
+    void on_supplierQuery_triggered();
 };
 
 #endif // RFIDMAINWINDOW_H
