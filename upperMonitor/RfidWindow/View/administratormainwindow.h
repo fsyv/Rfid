@@ -5,16 +5,16 @@
 #include <QDebug>
 
 namespace Ui {
-class MainWindow;
+class AdministratorMainwindow;
 }
 
-class MainWindow : public QMainWindow
+class AdministratorMainwindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit AdministratorMainwindow(QWidget *parent = 0);
+    ~AdministratorMainwindow();
 
 private slots:
     void on_Determine_clicked();
@@ -24,7 +24,7 @@ private slots:
     void on_Cancel_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::AdministratorMainwindow *ui;
 
 };
 

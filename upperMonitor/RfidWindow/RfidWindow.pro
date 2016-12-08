@@ -45,13 +45,13 @@ HEADERS  += \
     Model/rfidcardreadinfo.h \
     Controller/configureinfo.h \
     View/queryresult.h \
-    View/Administratormainwindow.h
+    View/administratormainwindow.h
 
 FORMS    += \
     View/rfidmainwindow.ui \
     View/login.ui \
     View/queryresult.ui \
-    View/Administratormainwindow.ui
+    View/administratormainwindow.ui
 
 DISTFILES += \
     logo/logo.ico \

@@ -1,23 +1,23 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "QTableWidget"
-#include "QMessageBox"
-#include "QDebug"
+#include "administratormainwindow.h"
+#include "ui_administratormainwindow.h"
+#include <QTableWidget>
+#include <QMessageBox>
+#include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent) :
+AdministratorMainwindow::AdministratorMainwindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::AdministratorMainwindow)
 {
     ui->setupUi(this);
     //    ui->EmployeeInformation->setEditTriggers(QAbstractItemView::EditTrigger);
 }
 
-MainWindow::~MainWindow()
+AdministratorMainwindow::~AdministratorMainwindow()
 {
     delete ui;
 }
 
-void MainWindow::on_Determine_clicked()
+void AdministratorMainwindow::on_Determine_clicked()
 {
     if(ui->AddRadioButton->isChecked())
     {
@@ -56,7 +56,7 @@ void MainWindow::on_Determine_clicked()
     }
 }
 
-void MainWindow::on_EmployeeInformation_activated(const QModelIndex &index)
+void AdministratorMainwindow::on_EmployeeInformation_activated(const QModelIndex &index)
 {
     ui->EmployeeInformation->setFocusPolicy(Qt::NoFocus);
 
@@ -64,7 +64,7 @@ void MainWindow::on_EmployeeInformation_activated(const QModelIndex &index)
 
 }
 
-void MainWindow::on_Cancel_clicked()
+void AdministratorMainwindow::on_Cancel_clicked()
 {
     close();
 }

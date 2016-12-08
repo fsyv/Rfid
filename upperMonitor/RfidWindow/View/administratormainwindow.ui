@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>AdministratorMainwindow</class>
+ <widget class="QMainWindow" name="AdministratorMainwindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -132,8 +132,6 @@
      </widget>
     </item>
    </layout>
-   <zorder>EmployeeInformation</zorder>
-   <zorder>label</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>

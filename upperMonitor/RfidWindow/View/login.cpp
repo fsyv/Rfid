@@ -2,6 +2,7 @@
 #include "ui_login.h"
 #include "View/widgeterror.h"
 #include "View/rfidmainwindow.h"
+#include "View/administratormainwindow.h"
 #include <QMessageBox>
 #include <qDebug>
 
@@ -50,7 +51,13 @@ bool Login::checkUserNameAndPassIsRight()
 
 void Login::adminWidget()
 {
-    qDebug()<<"我是管理员";
+    administratorMainwindow = new AdministratorMainwindow();
+
+    if(!administratorMainwindow)
+    {
+        throw new WidgetError("内存不足", WidgetError::MemoryError);
+    }
+    administratorMainwindow->show();
 }
 
 void Login::employeeWidget()
