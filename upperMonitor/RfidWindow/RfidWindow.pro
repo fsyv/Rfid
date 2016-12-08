@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     Model/opreatingthread.cpp \
     Model/rfidcardreadinfo.cpp \
     Controller/configureinfo.cpp \
-    View/queryresult.cpp
+    View/queryresult.cpp \
+    View/administratormainwindow.cpp
 
 HEADERS  += \
     Controller/connectionservice.h \
@@ -43,12 +44,14 @@ HEADERS  += \
     Model/opreatingthread.h \
     Model/rfidcardreadinfo.h \
     Controller/configureinfo.h \
-    View/queryresult.h
+    View/queryresult.h \
+    View/Administratormainwindow.h
 
 FORMS    += \
     View/rfidmainwindow.ui \
     View/login.ui \
-    View/queryresult.ui
+    View/queryresult.ui \
+    View/Administratormainwindow.ui
 
 DISTFILES += \
     logo/logo.ico \
