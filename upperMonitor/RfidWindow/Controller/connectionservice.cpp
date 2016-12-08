@@ -33,14 +33,49 @@ ConnectionService::~ConnectionService()
 void ConnectionService::sendMessage(QByteArray byteArray)
 {
     qDebug() << "发送消息：";
+
+    byteArray.append("\r\n", strlen("\r\n"));
     qDebug()<< byteArray;
     clientTcpSocket->write(byteArray);
 }
 
 void ConnectionService::readMessage()
 {
-    qDebug() << "收到消息";
-    qDebug() << clientTcpSocket->readAll();
+    QByteArray byteArray = clientTcpSocket->readAll();
+
+    qDebug() << "发送消息：";
+    qDebug()<< byteArray;
+
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray);
+
+    QJsonObject obj = parse_doucment.object();
+
+    if(obj.contains("MessageType"))
+    {
+        QJsonValue version_value = obj.take("MessageType");
+        QString str = version_value.toString();
+        if(str == "Query")
+        {
+            //查询结果
+            emit sendQueryResult(obj);
+        }
+        else if(str == "IN")
+        {
+            //入库结果
+            emit sendInResult(obj);
+        }
+        else if(str == "OUT")
+        {
+            //出库结果
+            emit sendOutResult(obj);
+        }
+        else if(str == "Login")
+        {
+            //登录结果
+            emit sendLoginResult(obj);
+        }
+    }
+
 }
 
 void ConnectionService::displayError(QAbstractSocket::SocketError)

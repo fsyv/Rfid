@@ -251,6 +251,22 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
     ui->textEdit->setTextCursor(cursor);
 }
 
+void RfidMainWindow::receiveQueryResult(QJsonObject obj)
+{
+    QueryResult queryResult;
+    queryResult.show();
+}
+
+void RfidMainWindow::receiveInResult(QJsonObject obj)
+{
+
+}
+
+void RfidMainWindow::receiveOutResult(QJsonObject obj)
+{
+
+}
+
 QString RfidMainWindow::getOperatorName() const
 {
     return operatorName;

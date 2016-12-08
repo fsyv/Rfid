@@ -21,6 +21,7 @@
 #include "Model/rfidoperating.h"
 #include "Controller/connectionservice.h"
 #include "Model/rfidcardreadinfo.h"
+#include "View/queryresult.h"
 
 namespace Ui {
 class RfidMainWindow;
@@ -57,6 +58,15 @@ private slots:
     void disconnectCardReader();
     //刷新显示框用
     void updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo);
+
+public slots:
+    //接受回传的数据
+    //查询结果
+    void receiveQueryResult(QJsonObject obj);
+    //入库结果
+    void receiveInResult(QJsonObject obj);
+    //出库结果
+    void receiveOutResult(QJsonObject obj);
 
 private:
     enum ReadCardWorkType{

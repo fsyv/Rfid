@@ -8,6 +8,14 @@ QueryResult::QueryResult(QWidget *parent) :
     ui->setupUi(this);
 }
 
+QueryResult::QueryResult(QByteArray byteArray, QWidget *parent):
+    QDialog(parent),
+    ui(new Ui::QueryResult)
+{
+    ui->setupUi(this);
+
+}
+
 QueryResult::~QueryResult()
 {
     delete ui;

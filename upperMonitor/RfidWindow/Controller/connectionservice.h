@@ -7,6 +7,9 @@
 #include <QTcpSocket>
 #include <QUrl>
 #include <QEventLoop>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 
 QT_BEGIN_NAMESPACE
 class ConfigureInfo;
@@ -21,6 +24,12 @@ public:
 
 private:
     QTcpSocket *clientTcpSocket;
+
+signals:
+    void sendQueryResult(QJsonObject);
+    void sendInResult(QJsonObject);
+    void sendOutResult(QJsonObject);
+    void sendLoginResult(QJsonObject);
 
 public slots:
     void sendMessage(QByteArray byteArray);

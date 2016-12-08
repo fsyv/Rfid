@@ -65,6 +65,10 @@ void Login::employeeWidget()
     connect(rfidMainWindow, SIGNAL(sendMessage(QByteArray)), service, SLOT(sendMessage(QByteArray)));
     connect(rfidMainWindow, SIGNAL(exitWidget()), this, SLOT(employeeWidgetLogout()));
 
+    connect(service, SIGNAL(sendQueryResult(QJsonObject)), rfidMainWindow, SLOT(receiveQueryResult(QJsonObject)));
+    connect(service, SIGNAL(sendInResult(QJsonObject)), rfidMainWindow, SLOT(receiveInResult(QJsonObject)));
+    connect(service, SIGNAL(sendOutResult(QJsonObject)), rfidMainWindow, SLOT(receiveOutResult(QJsonObject)));
+
     rfidMainWindow->setOperatorName(userName);
 
     rfidMainWindow->show();
