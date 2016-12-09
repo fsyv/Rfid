@@ -22,7 +22,6 @@ OpreatingThread::~OpreatingThread()
 
 void OpreatingThread::run()
 {
-    qDebug() << "come";
     while (isRun) {
         readInfo();
         msleep(100);
@@ -40,8 +39,12 @@ void OpreatingThread::readInfo()
         machine->selectCard();
         machine->authentication();
         qDebug() << currentCardID;
-        RfidCardReadInfo rfidCardReadInfo(machine->readData(), currentCardID, QDateTime::currentDateTime());
-        emit sendCardMessage(rfidCardReadInfo);
+        QString data = machine->readData();
+        if(data != QString(""))
+        {
+            RfidCardReadInfo rfidCardReadInfo(data, currentCardID, QDateTime::currentDateTime());
+            emit sendCardMessage(rfidCardReadInfo);
+        }
     }
 }
 

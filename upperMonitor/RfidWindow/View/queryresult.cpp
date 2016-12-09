@@ -61,11 +61,24 @@ void QueryResult::obligationResult()
             if(json.contains("Commint" + i))
             {
                 QJsonObject obj = json.take("Commint" + i).toObject();
-                if(obj.contains("supplierName"))
-                    str += obj.take("supplierName").toString();
+                if(obj.contains("depotNo"))
+                    str += obj.take("depotNo").toString();
 
-                if(obj.contains("supplierNo"))
-                    str += obj.take("supplierNo").toString();
+                if(obj.contains("goodsSum"))
+                    str += QString::number(obj.take("goodsSum").toInt());
+
+                if(obj.contains("goodsPrice"))
+                    str += QString::number(obj.take("goodsPrice").toInt());
+
+                if(obj.contains("goodsWeight"))
+                    str += QString::number(obj.take("goodsPrice").toInt());
+
+                if(obj.contains("goodsNo"))
+                    str += obj.take("goodsPrice").toString();
+
+                if(obj.contains("goodsName"))
+                    str += obj.take("goodsName").toString();
+
 
                 ui->textEdit->append(str);
             }
@@ -85,5 +98,23 @@ void QueryResult::outGoodsResult()
 
 void QueryResult::supplierResult()
 {
+    if(json.contains("Count"))
+    {
+        int count = json.take("Count").toInt();
+        for(int i = 0; i < count; ++i)
+        {
+            QString str("");
+            if(json.contains("Commint" + i))
+            {
+                QJsonObject obj = json.take("Commint" + i).toObject();
+                if(obj.contains("supplierName"))
+                    str += obj.take("supplierName").toString();
 
+                if(obj.contains("supplierNo"))
+                    str += obj.take("supplierNo").toString();
+
+                ui->textEdit->append(str);
+            }
+        }
+    }
 }

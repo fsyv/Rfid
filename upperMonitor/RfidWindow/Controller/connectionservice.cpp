@@ -47,7 +47,16 @@ void ConnectionService::readMessage()
     qDebug() << "收消息：";
     qDebug()<< byteArray;
 
-    QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray);
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QString str = codec->toUnicode(byteArray);
+
+    qDebug() << str;
+
+    QJsonParseError error;
+
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray, &error);
+
+    qDebug() << error.errorString();
 
     QJsonObject obj = parse_doucment.object();
 
