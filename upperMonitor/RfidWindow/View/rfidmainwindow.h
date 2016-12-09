@@ -68,6 +68,7 @@ public slots:
     //出库结果
     void receiveOutResult(QJsonObject obj);
 
+
 private:
     enum ReadCardWorkType{
         NO_WORK_TYPE = 0,            //没有设置工作状态

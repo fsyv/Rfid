@@ -44,7 +44,7 @@ void ConnectionService::readMessage()
 {
     QByteArray byteArray = clientTcpSocket->readAll();
 
-    qDebug() << "发送消息：";
+    qDebug() << "收消息：";
     qDebug()<< byteArray;
 
     QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray);
@@ -58,6 +58,7 @@ void ConnectionService::readMessage()
         if(str == "Query")
         {
             //查询结果
+            qDebug() << "收到查询结果";
             emit sendQueryResult(obj);
         }
         else if(str == "IN")

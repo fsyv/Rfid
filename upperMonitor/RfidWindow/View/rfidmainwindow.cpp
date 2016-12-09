@@ -253,6 +253,7 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 
 void RfidMainWindow::receiveQueryResult(QJsonObject obj)
 {
+    qDebug()<< "有查询结果消息";
     QueryResult *queryResult = new QueryResult();
     queryResult->show();
 }
@@ -296,7 +297,7 @@ void RfidMainWindow::on_enterPushButton_clicked(bool checked)
 
         jsonObject = new QJsonObject();
 
-        jsonObject->insert("MessageType", "IN");
+        jsonObject->insert("MessageType", "InGoods");
         jsonObject->insert("StartTime", QTime::currentTime().toString());
         jsonObject->insert("OperatorName", operatorName);
         //批次号
@@ -337,7 +338,7 @@ void RfidMainWindow::on_outPushButton_clicked(bool checked)
 
         jsonObject = new QJsonObject();
 
-        jsonObject->insert("MessageType", "OUT");
+        jsonObject->insert("MessageType", "OutGoods");
         jsonObject->insert("StartTime", QTime::currentTime().toString());
         jsonObject->insert("OperatorName", operatorName);
         //批次号
