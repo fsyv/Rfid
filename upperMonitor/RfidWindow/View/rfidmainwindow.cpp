@@ -254,18 +254,32 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 void RfidMainWindow::receiveQueryResult(QJsonObject obj)
 {
     qDebug()<< "有查询结果消息";
-    QueryResult *queryResult = new QueryResult();
+    QueryResult *queryResult = new QueryResult(obj);
     queryResult->show();
 }
 
 void RfidMainWindow::receiveInResult(QJsonObject obj)
 {
-
+    if(obj.contains("Result"))
+    {
+        QString str = obj.take("Result").toString();
+        if(str == QString("true"))
+            QMessageBox::information(NULL, "提示", "入库成功", QMessageBox::Ok);
+        else if(str == QString("false"))
+            QMessageBox::information(NULL, "提示", "入库失败", QMessageBox::Ok);
+    }
 }
 
 void RfidMainWindow::receiveOutResult(QJsonObject obj)
 {
-
+    if(obj.contains("Result"))
+    {
+        QString str = obj.take("Result").toString();
+        if(str == QString("true"))
+            QMessageBox::information(NULL, "提示", "出库成功", QMessageBox::Ok);
+        else if(str == QString("false"))
+            QMessageBox::information(NULL, "提示", "出库失败", QMessageBox::Ok);
+    }
 }
 
 QString RfidMainWindow::getOperatorName() const

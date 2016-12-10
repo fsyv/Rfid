@@ -24,6 +24,7 @@ public:
 
 private:
     QTcpSocket *clientTcpSocket;
+    QByteArray byteArray;
 
 signals:
     void sendQueryResult(QJsonObject);

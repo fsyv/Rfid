@@ -42,50 +42,51 @@ void ConnectionService::sendMessage(QByteArray byteArray)
 
 void ConnectionService::readMessage()
 {
-    QByteArray byteArray = clientTcpSocket->readAll();
-
     qDebug() << "收消息：";
-    qDebug()<< byteArray;
 
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString str = codec->toUnicode(byteArray);
+    byteArray.append(clientTcpSocket->readAll());
 
-    qDebug() << str;
-
-    QJsonParseError error;
-
-    QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray, &error);
-
-    qDebug() << error.errorString();
-
-    QJsonObject obj = parse_doucment.object();
-
-    if(obj.contains("MessageType"))
+    if(byteArray.at(byteArray.length() - 2) == '\r'&& byteArray.at(byteArray.length() - 1) == '\n')
     {
-        QJsonValue version_value = obj.take("MessageType");
-        QString str = version_value.toString();
-        if(str == "Query")
+        QJsonParseError error;
+        QJsonDocument parse_doucment = QJsonDocument::fromJson(byteArray, &error);
+
+        qDebug()<<byteArray;
+
+        byteArray.clear();
+
+        qDebug() << error.errorString();
+
+        QJsonObject obj = parse_doucment.object();
+
+        if(obj.contains("MessageType"))
         {
-            //查询结果
-            qDebug() << "收到查询结果";
-            emit sendQueryResult(obj);
-        }
-        else if(str == "IN")
-        {
-            //入库结果
-            emit sendInResult(obj);
-        }
-        else if(str == "OUT")
-        {
-            //出库结果
-            emit sendOutResult(obj);
-        }
-        else if(str == "Login")
-        {
-            //登录结果
-            emit sendLoginResult(obj);
+            QJsonValue version_value = obj.take("MessageType");
+            QString str = version_value.toString();
+            if(str == "Query")
+            {
+                //查询结果
+                qDebug() << "收到查询结果";
+                emit sendQueryResult(obj);
+            }
+            else if(str == "InGoods")
+            {
+                //入库结果
+                emit sendInResult(obj);
+            }
+            else if(str == "OutGoods")
+            {
+                //出库结果
+                emit sendOutResult(obj);
+            }
+            else if(str == "Login")
+            {
+                //登录结果
+                emit sendLoginResult(obj);
+            }
         }
     }
+
 
 }
 

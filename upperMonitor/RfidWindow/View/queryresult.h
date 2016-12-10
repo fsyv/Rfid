@@ -5,6 +5,8 @@
 #include <QByteArray>
 #include <QTextCodec>
 #include <QJsonObject>
+#include <QJsonArray>
+#include <qDebug>
 
 namespace Ui {
 class QueryResult;
