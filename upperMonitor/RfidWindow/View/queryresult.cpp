@@ -125,7 +125,7 @@ void QueryResult::inGoodsResult()
                             str += QString("商品名字: ") + arrayObj["goodsName"].toString();
 
                         if(arrayObj.contains("goodsNum"))
-                            str += QString("商品名字: ") + QString::number(arrayObj["goodsNum"].toInt());
+                            str += QString("商品数量: ") + QString::number(arrayObj["goodsNum"].toInt());
 
                     }
                 }
@@ -171,7 +171,7 @@ void QueryResult::outGoodsResult()
                             str += QString("商品名字: ") + arrayObj["goodsName"].toString();
 
                         if(arrayObj.contains("goodsNum"))
-                            str += QString("商品名字: ") + QString::number(arrayObj["goodsNum"].toInt());
+                            str += QString("商品数量: ") + QString::number(arrayObj["goodsNum"].toInt());
 
                     }
                 }

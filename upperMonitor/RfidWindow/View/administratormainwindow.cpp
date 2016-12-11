@@ -22,7 +22,7 @@ void AdministratorMainwindow::closeEvent(QCloseEvent *e)
     if(QMessageBox::Yes == QMessageBox::question(NULL, \
                                                  "提示", \
                                                  "是否关闭?", \
-                                                 QMessageBox::Yes|QMessageBox::No))
+                                                 QMessageBox::Yes|QMessageBox::No)) //提示关闭窗口
     {
         emit exitWidget();
         e->accept();
@@ -32,7 +32,7 @@ void AdministratorMainwindow::closeEvent(QCloseEvent *e)
 }
 
 void AdministratorMainwindow::updateWidget(QJsonObject json)
-{
+{  //更新表格
     if(json.contains("Quantity"))
     {
         int count = json["Quantity"].toInt();
