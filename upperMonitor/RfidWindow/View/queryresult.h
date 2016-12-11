@@ -23,7 +23,6 @@ public:
 
 private:
     void showResultInfo();
-    //OutGoodsSupplier
     //库存查询结果
     void obligationResult();
     //入库查询结果

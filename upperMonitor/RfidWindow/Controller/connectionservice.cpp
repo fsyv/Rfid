@@ -84,6 +84,16 @@ void ConnectionService::readMessage()
                 //登录结果
                 emit sendLoginResult(obj);
             }
+            else if(str == "UserAdd")
+            {
+                //用户增加结果
+                emit sendQueryResult(obj);
+            }
+            else if(str == "UserDel")
+            {
+                //用户删除结果
+                emit sendQueryResult(obj);
+            }
         }
     }
 

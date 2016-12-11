@@ -16,6 +16,7 @@ Login::Login(QWidget *parent) :
     rfidMainWindow = 0;
 
     service = new ConnectionService(this);
+    connect(service, SIGNAL(sendLoginResult(QJsonObject)), this, SLOT(receiverLoginRuselt(QJsonObject)));
 }
 
 Login::~Login()
@@ -44,9 +45,9 @@ bool Login::checkInputIsEmpty()
     return userName.isEmpty() || userPass.isEmpty();
 }
 
-bool Login::checkUserNameAndPassIsRight()
+void Login::checkUserNameAndPassIsRight()
 {
-    return true;
+
 }
 
 void Login::adminWidget()
@@ -57,6 +58,15 @@ void Login::adminWidget()
     {
         throw new WidgetError("内存不足", WidgetError::MemoryError);
     }
+
+
+    connect(administratorMainwindow, SIGNAL(sendMessage(QByteArray)), service, SLOT(sendMessage(QByteArray)));
+    connect(administratorMainwindow, SIGNAL(exitWidget()), this, SLOT(employeeWidgetLogout()));
+
+    connect(service, SIGNAL(sendQueryResult(QJsonObject)), administratorMainwindow, SLOT(receiveMessage(QJsonObject)));
+
+    sendMessageForUsersInfo();
+
     administratorMainwindow->show();
 }
 
@@ -82,6 +92,20 @@ void Login::employeeWidget()
 
 }
 
+void Login::sendMessageForUsersInfo()
+{
+    QJsonObject json;
+    json.insert("MessageType", "Query");
+    //入库查询
+    json.insert("QueryType", "Users");
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+    service->sendMessage(byteArrayFromJson);
+}
+
 void Login::on_LoginPushButton_clicked()
 {
 
@@ -93,26 +117,36 @@ void Login::on_LoginPushButton_clicked()
         return;
     }
 
-    if(!checkUserNameAndPassIsRight())
-    {
-        errorMessage("账号密码错误!");
-        return;
-    }
+//    QJsonObject json;
+//    json.insert("MessageType", "Login");
+//    json.insert("UserName", userName);
+//    json.insert("UserPass", userPass);
 
-    switch (userName.at(0).unicode()) {
-    case '0':
-        //管理员
-        adminWidget();
-        break;
-    case '1':
-        //员工
-        employeeWidget();
-        break;
-    default:
-        errorMessage("账号错误");
-        return;
-    }
-    this->hide();
+//    QJsonDocument document;
+//    document.setObject(json);
+//    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+//    qDebug() << "登录";
+//    qDebug() << byteArrayFromJson;
+
+//    service->sendMessage(byteArrayFromJson);
+
+    //登录成功
+        switch (userName.at(0).unicode()) {
+        case '0':
+            //管理员
+            adminWidget();
+            break;
+        case '1':
+            //员工
+            employeeWidget();
+            break;
+        default:
+            errorMessage("账号错误");
+            return;
+        }
+        this->hide();
+
 }
 
 void Login::employeeWidgetLogout()
@@ -122,7 +156,46 @@ void Login::employeeWidgetLogout()
     this->show();
 }
 
+void Login::adminWidgetLogout()
+{
+    delete administratorMainwindow;
+    administratorMainwindow = 0;
+    this->show();
+}
+
 void Login::on_exitPushButton_clicked()
 {
     close();
+}
+
+void Login::receiverLoginRuselt(QJsonObject obj)
+{
+    if(obj.contains("Ruselt"))
+    {
+        QString str = obj.take("Ruselt").toString();
+        if(QString("TRUE") == str)
+        {
+            //登录成功
+            switch (userName.at(0).unicode()) {
+            case '0':
+                //管理员
+                adminWidget();
+                break;
+            case '1':
+                //员工
+                employeeWidget();
+                break;
+            default:
+                errorMessage("账号错误");
+                return;
+            }
+            this->hide();
+        }
+        else if(QString("FLASE") == str)
+        {
+            //登录失败
+            QMessageBox::critical(0, "错误", "账号密码错误", QMessageBox::Ok);
+        }
+    }
+
 }

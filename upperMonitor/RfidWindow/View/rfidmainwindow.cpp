@@ -254,8 +254,15 @@ void RfidMainWindow::updateTextEdit(const RfidCardReadInfo &rfidCardReadInfo)
 void RfidMainWindow::receiveQueryResult(QJsonObject obj)
 {
     qDebug()<< "有查询结果消息";
-    QueryResult *queryResult = new QueryResult(obj);
-    queryResult->show();
+    if(obj.contains("QueryType"))
+    {
+        QString str = obj.take("QueryType").toString();
+        if(str != QString("Users"))
+        {
+            QueryResult *queryResult = new QueryResult(obj);
+            queryResult->show();
+        }
+    }
 }
 
 void RfidMainWindow::receiveInResult(QJsonObject obj)

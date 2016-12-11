@@ -17,6 +17,25 @@ AdministratorMainwindow::~AdministratorMainwindow()
     delete ui;
 }
 
+void AdministratorMainwindow::closeEvent(QCloseEvent *e)
+{
+    if(QMessageBox::Yes == QMessageBox::question(NULL, \
+                                                 "提示", \
+                                                 "是否关闭?", \
+                                                 QMessageBox::Yes|QMessageBox::No))
+    {
+        emit exitWidget();
+        e->accept();
+    }
+    else
+        e->ignore();
+}
+
+void AdministratorMainwindow::updateWidget()
+{
+
+}
+
 void AdministratorMainwindow::on_Determine_clicked()
 {
     QTableWidget *worker = ui->EmployeeInformation;
@@ -44,12 +63,27 @@ void AdministratorMainwindow::on_Determine_clicked()
                 worker->insertRow(rows);
                 ui->EmployeeInformation->setItem(rows,0,new QTableWidgetItem(ui->NumText->text()));
                 ui->EmployeeInformation->setItem(rows,1,new QTableWidgetItem(ui->PassText->text()));
+
+                QJsonObject json;
+                json.insert("MessageType", "UserAdd");
+                json.insert("UserName", ui->NumText->text());
+                json.insert("UserPass", ui->PassText->text());
+
+                QJsonDocument document;
+                document.setObject(json);
+                QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
+                qDebug() << "新增用户";
+                qDebug() << byteArrayFromJson;
+
+                emit sendMessage(byteArrayFromJson);
             }
         }
         ui->EmployeeInformation->selectRow(rows);
         ui->NumText->clear();
         ui->PassText->clear();
 
+        return;
     }
 
     //查找
@@ -75,6 +109,7 @@ void AdministratorMainwindow::on_Determine_clicked()
 
         ui->NumText->clear();
         ui->PassText->clear();
+        return;
     }
 
     //删除
@@ -82,7 +117,23 @@ void AdministratorMainwindow::on_Determine_clicked()
     {
         bool focus = ui->EmployeeInformation->isItemSelected(ui->EmployeeInformation->currentItem());
         if(focus)
+        {
+            QJsonObject json;
+            json.insert("MessageType", "UserAdd");
+            json.insert("UserName", ui->EmployeeInformation->item(ui->EmployeeInformation->currentItem()->row(), 0)->text());
+
+            QJsonDocument document;
+            document.setObject(json);
+            QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+
             ui->EmployeeInformation->removeRow(ui->EmployeeInformation->currentItem()->row());
+
+            qDebug() << "删除用户";
+            qDebug() << byteArrayFromJson;
+
+            emit sendMessage(byteArrayFromJson);
+        }
+        return;
     }
 
 }
@@ -99,3 +150,50 @@ void AdministratorMainwindow::on_Cancel_clicked()
 {
     close();
 }
+
+void AdministratorMainwindow::receiveMessage(QJsonObject obj)
+{
+    qDebug()<< "admin收到消息";
+
+    if(obj.contains("MeassgeType"))
+    {
+        QString str = obj.take("MeassgeType").toString();
+        if(str == QString("UserAdd"))
+        {
+            //增加用户的结果
+            if(obj.contains("Result"))
+            {
+                str = obj.take("Result").toString();
+                if(str == QString("true"))
+                    QMessageBox::information(NULL, "提示", "增加用户成功", QMessageBox::Ok);
+                else if(str == QString("false"))
+                    QMessageBox::information(NULL, "提示", "增加用户失败", QMessageBox::Ok);
+            }
+        }
+        else if(str == QString("UserDel"))
+        {
+            //删除用户的结果
+            if(obj.contains("Result"))
+            {
+                str = obj.take("Result").toString();
+                if(str == QString("true"))
+                    QMessageBox::information(NULL, "提示", "删除用户成功", QMessageBox::Ok);
+                else if(str == QString("false"))
+                    QMessageBox::information(NULL, "提示", "删除用户失败", QMessageBox::Ok);
+            }
+        }
+        else if(str == QString("Query"))
+        {
+            //用户查询的结果
+            if(obj.contains("QueryType"))
+            {
+                str = obj.take("QueryType").toString();
+                if(str == QString("Users"))
+                {
+                    updateWidget();
+                }
+            }
+        }
+    }
+}
+

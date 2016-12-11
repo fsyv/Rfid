@@ -121,7 +121,35 @@ void QueryResult::inGoodsResult()
 
 void QueryResult::outGoodsResult()
 {
+    if(json.contains("Quantity"))
+    {
+        int count = json.take("Quantity").toInt();
+        for(int i = 0; i < count; ++i)
+        {
+            QString str("");
+            if(json.contains(QString("Commint" + QString::number(i))))
+            {
+                QJsonObject obj = json.take(QString("Commint" + QString::number(i))).toObject();
 
+
+                if(obj.contains("username"))
+                    str += QString("操作员: ") + obj.take("username").toString();
+
+                if(obj.contains("inOrOutNo"))
+                    str += QString("出库单号") + obj.take("inOrOutNo").toString();
+
+                if(obj.contains("inOrOutGoods"))
+                {
+                    QJsonArray jsonArray = obj.take("inOrOutGoods").toArray();
+                    qDebug() << "json count" <<jsonArray.count();
+                    //jsonArray.takeAt();
+                }
+
+
+                ui->textEdit->append(str);
+            }
+        }
+    }
 }
 
 void QueryResult::supplierResult()

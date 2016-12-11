@@ -2,7 +2,9 @@
 #define LOGIN_H
 
 #include <QWidget>
-
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
 
 namespace Ui {
 class Login;
@@ -27,17 +29,22 @@ private:
     void getUserNameAndPassFromWidget();
     void errorMessage(QString errorString);
     bool checkInputIsEmpty();
-    bool checkUserNameAndPassIsRight();
+    void checkUserNameAndPassIsRight();
     //管理员的界面
     void adminWidget();
     //员工的界面
     void employeeWidget();
+    //请求所有用户信息
+    void sendMessageForUsersInfo();
 
 private slots:
     void on_LoginPushButton_clicked();
     void employeeWidgetLogout();
+    void adminWidgetLogout();
 
     void on_exitPushButton_clicked();
+    //登录结果
+    void receiverLoginRuselt(QJsonObject obj);
 
 private:
     Ui::Login *ui;
