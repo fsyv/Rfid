@@ -117,35 +117,35 @@ void Login::on_LoginPushButton_clicked()
         return;
     }
 
-//    QJsonObject json;
-//    json.insert("MessageType", "Login");
-//    json.insert("UserNo", userName);
-//    json.insert("UserPass", userPass);
+    QJsonObject json;
+    json.insert("MessageType", "Login");
+    json.insert("UserNo", userName);
+    json.insert("UserPass", userPass);
 
-//    QJsonDocument document;
-//    document.setObject(json);
-//    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byteArrayFromJson = document.toJson(QJsonDocument::Compact);
 
-//    qDebug() << "登录";
-//    qDebug() << byteArrayFromJson;
+    qDebug() << "登录";
+    qDebug() << byteArrayFromJson;
 
-//    service->sendMessage(byteArrayFromJson);
+    service->sendMessage(byteArrayFromJson);
 
-    //登录成功
-        switch (userName.at(0).unicode()) {
-        case '0':
-            //管理员
-            adminWidget();
-            break;
-        case '1':
-            //员工
-            employeeWidget();
-            break;
-        default:
-            errorMessage("账号错误");
-            return;
-        }
-        this->hide();
+//    //登录成功
+//        switch (userName.at(0).unicode()) {
+//        case '0':
+//            //管理员
+//            adminWidget();
+//            break;
+//        case '1':
+//            //员工
+//            employeeWidget();
+//            break;
+//        default:
+//            errorMessage("账号错误");
+//            return;
+//        }
+//        this->hide();
 
 }
 
@@ -170,10 +170,10 @@ void Login::on_exitPushButton_clicked()
 
 void Login::receiverLoginRuselt(QJsonObject obj)
 {
-    if(obj.contains("Ruselt"))
+    if(obj.contains("Result"))
     {
-        QString str = obj["Ruselt"].toString();
-        if(QString("TRUE") == str)
+        QString str = obj["Result"].toString();
+        if(QString("true") == str)
         {
             //登录成功
             switch (userName.at(0).unicode()) {
@@ -191,7 +191,7 @@ void Login::receiverLoginRuselt(QJsonObject obj)
             }
             this->hide();
         }
-        else if(QString("FLASE") == str)
+        else if(QString("false") == str)
         {
             //登录失败
             QMessageBox::critical(0, "错误", "账号密码错误", QMessageBox::Ok);
