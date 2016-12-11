@@ -119,7 +119,7 @@ void Login::on_LoginPushButton_clicked()
 
 //    QJsonObject json;
 //    json.insert("MessageType", "Login");
-//    json.insert("UserName", userName);
+//    json.insert("UserNo", userName);
 //    json.insert("UserPass", userPass);
 
 //    QJsonDocument document;
@@ -172,7 +172,7 @@ void Login::receiverLoginRuselt(QJsonObject obj)
 {
     if(obj.contains("Ruselt"))
     {
-        QString str = obj.take("Ruselt").toString();
+        QString str = obj["Ruselt"].toString();
         if(QString("TRUE") == str)
         {
             //登录成功

@@ -26,26 +26,30 @@ void QueryResult::showResultInfo()
 {
     if(json.contains("QueryType"))
     {
-        QString queryType = json.take("QueryType").toString();
+        QString queryType = json["QueryType"].toString();
 
         if(queryType == QString("Obligation"))
         {
             //库存查询结果
+            qDebug() << "库存查询结果";
             obligationResult();
         }
         else if(queryType == QString("InGoods"))
         {
             //入库查询结果
+            qDebug() << "入库查询结果";
             inGoodsResult();
         }
         else if(queryType == QString("OutGoods"))
         {
             //出库查询结果
+            qDebug() << "出库查询结果";
             outGoodsResult();
         }
         else if(queryType == QString("Supplier"))
         {
             //供应商查询结果
+            qDebug() << "供应商查询结果";
             supplierResult();
         }
     }
@@ -53,9 +57,10 @@ void QueryResult::showResultInfo()
 
 void QueryResult::obligationResult()
 {
+    setWindowTitle("库存查询");
     if(json.contains("Quantity"))
     {
-        int count = json.take("Quantity").toInt();
+        int count = json["Quantity"].toInt();
         for(int i = 0; i < count; ++i)
         {
             QString str("");
@@ -64,21 +69,21 @@ void QueryResult::obligationResult()
             {
                 qDebug() << QString("Commint" + QString::number(i));
 
-                QJsonObject obj = json.take(QString("Commint" + QString::number(i))).toObject();
+                QJsonObject obj = json[QString("Commint" + QString::number(i))].toObject();
                 if(obj.contains("depotNo"))
-                    str += QString("编号: ") + obj.take("depotNo").toString();
+                    str += QString("仓库编号: ") + obj["depotNo"].toString();
 
                 if(obj.contains("goodsName"))
-                    str += QString("名字: ") + obj.take("goodsName").toString();
+                    str += QString("名字: ") + obj["goodsName"].toString();
 
                 if(obj.contains("goodsSum"))
-                    str += QString("库存: ") + QString::number(obj.take("goodsSum").toInt());
+                    str += QString("库存: ") + QString::number(obj["goodsSum"].toInt());
 
                 if(obj.contains("goodsPrice"))
-                    str += QString("价格: ") + QString::number(obj.take("goodsPrice").toInt());
+                    str += QString("价格: ") + QString::number(obj["goodsPrice"].toInt());
 
                 if(obj.contains("goodsWeight"))
-                    str += QString("重量: ") + QString::number(obj.take("goodsWeight").toInt());
+                    str += QString("重量: ") + QString::number(obj["goodsWeight"].toInt());
 
                 ui->textEdit->append(str);
             }
@@ -88,30 +93,42 @@ void QueryResult::obligationResult()
 
 void QueryResult::inGoodsResult()
 {
+    setWindowTitle("入库查询");
     if(json.contains("Quantity"))
     {
-        int count = json.take("Quantity").toInt();
+        int count = json["Quantity"].toInt();
         for(int i = 0; i < count; ++i)
         {
             QString str("");
             if(json.contains(QString("Commint" + QString::number(i))))
             {
-                QJsonObject obj = json.take(QString("Commint" + QString::number(i))).toObject();
+                QJsonObject obj = json[QString("Commint" + QString::number(i))].toObject();
 
 
                 if(obj.contains("username"))
-                    str += QString("操作员: ") + obj.take("username").toString();
+                    str += QString("操作员: ") + obj["username"].toString();
 
                 if(obj.contains("inOrOutNo"))
-                    str += QString("入库单号") + obj.take("inOrOutNo").toString();
+                    str += QString("入库单号") + obj["inOrOutNo"].toString();
 
                 if(obj.contains("inOrOutGoods"))
                 {
-                    QJsonArray jsonArray = obj.take("inOrOutGoods").toArray();
-                    qDebug() << "json count" <<jsonArray.count();
-                    //jsonArray.takeAt();
-                }
+                    QJsonArray jsonArray = obj["inOrOutGoods"].toArray();
 
+                    for(int i = 0; i < jsonArray.count(); ++i)
+                    {
+                        QJsonObject arrayObj = jsonArray.at(i).toObject();
+
+                        str += "\n\t";
+
+                        if(arrayObj.contains("goodsName"))
+                            str += QString("商品名字: ") + arrayObj["goodsName"].toString();
+
+                        if(arrayObj.contains("goodsNum"))
+                            str += QString("商品名字: ") + QString::number(arrayObj["goodsNum"].toInt());
+
+                    }
+                }
 
                 ui->textEdit->append(str);
             }
@@ -121,28 +138,42 @@ void QueryResult::inGoodsResult()
 
 void QueryResult::outGoodsResult()
 {
+    setWindowTitle("出库查询");
     if(json.contains("Quantity"))
     {
-        int count = json.take("Quantity").toInt();
+        int count = json["Quantity"].toInt();
         for(int i = 0; i < count; ++i)
         {
             QString str("");
             if(json.contains(QString("Commint" + QString::number(i))))
             {
-                QJsonObject obj = json.take(QString("Commint" + QString::number(i))).toObject();
+                QJsonObject obj = json[QString("Commint" + QString::number(i))].toObject();
 
 
                 if(obj.contains("username"))
-                    str += QString("操作员: ") + obj.take("username").toString();
+                    str += QString("操作员: ") + obj["username"].toString();
 
                 if(obj.contains("inOrOutNo"))
-                    str += QString("出库单号") + obj.take("inOrOutNo").toString();
+                    str += QString("出库单号") + obj["inOrOutNo"].toString();
 
                 if(obj.contains("inOrOutGoods"))
                 {
-                    QJsonArray jsonArray = obj.take("inOrOutGoods").toArray();
-                    qDebug() << "json count" <<jsonArray.count();
-                    //jsonArray.takeAt();
+                    QJsonArray jsonArray = obj["inOrOutGoods"].toArray();
+
+
+                    for(int i = 0; i < jsonArray.count(); ++i)
+                    {
+                        QJsonObject arrayObj = jsonArray.at(i).toObject();
+
+                        str += "\n\t";
+
+                        if(arrayObj.contains("goodsName"))
+                            str += QString("商品名字: ") + arrayObj["goodsName"].toString();
+
+                        if(arrayObj.contains("goodsNum"))
+                            str += QString("商品名字: ") + QString::number(arrayObj["goodsNum"].toInt());
+
+                    }
                 }
 
 
@@ -154,21 +185,22 @@ void QueryResult::outGoodsResult()
 
 void QueryResult::supplierResult()
 {
+    setWindowTitle("供应商查询");
     if(json.contains("Quantity"))
     {
-        int count = json.take("Quantity").toInt();
+        int count = json["Quantity"].toInt();
         for(int i = 0; i < count; ++i)
         {
             QString str("");
             if(json.contains(QString("Commint" + QString::number(i))))
             {
-                QJsonObject obj = json.take(QString("Commint" + QString::number(i))).toObject();
+                QJsonObject obj = json[QString("Commint" + QString::number(i))].toObject();
 
                 if(obj.contains("supplierName"))
-                    str += QString("供应商名字: ") + obj.take("supplierName").toString();
+                    str += QString("供应商名字: ") + obj["supplierName"].toString();
 
                 if(obj.contains("supplierNo"))
-                    str += QString("供应商编号: ") + obj.take("supplierNo").toString();
+                    str += QString("供应商编号: ") + obj["supplierNo"].toString();
 
                 ui->textEdit->append(str);
             }

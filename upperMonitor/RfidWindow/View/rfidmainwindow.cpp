@@ -256,7 +256,7 @@ void RfidMainWindow::receiveQueryResult(QJsonObject obj)
     qDebug()<< "有查询结果消息";
     if(obj.contains("QueryType"))
     {
-        QString str = obj.take("QueryType").toString();
+        QString str = obj["QueryType"].toString();
         if(str != QString("Users"))
         {
             QueryResult *queryResult = new QueryResult(obj);
@@ -269,7 +269,7 @@ void RfidMainWindow::receiveInResult(QJsonObject obj)
 {
     if(obj.contains("Result"))
     {
-        QString str = obj.take("Result").toString();
+        QString str = obj["Result"].toString();
         if(str == QString("true"))
             QMessageBox::information(NULL, "提示", "入库成功", QMessageBox::Ok);
         else if(str == QString("false"))
@@ -281,7 +281,7 @@ void RfidMainWindow::receiveOutResult(QJsonObject obj)
 {
     if(obj.contains("Result"))
     {
-        QString str = obj.take("Result").toString();
+        QString str = obj["Result"].toString();
         if(str == QString("true"))
             QMessageBox::information(NULL, "提示", "出库成功", QMessageBox::Ok);
         else if(str == QString("false"))

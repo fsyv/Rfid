@@ -61,7 +61,7 @@ void ConnectionService::readMessage()
 
         if(obj.contains("MessageType"))
         {
-            QJsonValue version_value = obj.take("MessageType");
+            QJsonValue version_value = obj["MessageType"];
             QString str = version_value.toString();
             if(str == "Query")
             {

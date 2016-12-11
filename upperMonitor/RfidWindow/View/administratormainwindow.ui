@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>管理员操作</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -104,7 +104,7 @@
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
       <attribute name="horizontalHeaderVisible">
-       <bool>false</bool>
+       <bool>true</bool>
       </attribute>
       <attribute name="horizontalHeaderMinimumSectionSize">
        <number>20</number>

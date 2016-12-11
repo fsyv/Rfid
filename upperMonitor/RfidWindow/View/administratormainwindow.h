@@ -26,7 +26,7 @@ protected:
 
 private:
     //刷新界面显示框
-    void updateWidget();
+    void updateWidget(QJsonObject json);
 
 private slots:
     void on_Determine_clicked();
