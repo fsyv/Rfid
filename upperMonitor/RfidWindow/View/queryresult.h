@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QByteArray>
+#include <QTextCodec>
+#include <QJsonObject>
 
 namespace Ui {
 class QueryResult;
@@ -14,11 +16,24 @@ class QueryResult : public QDialog
 
 public:
     explicit QueryResult(QWidget *parent = 0);
-    explicit QueryResult(QByteArray byteArray, QWidget *parent = 0);
+    explicit QueryResult(QJsonObject jsonObject, QWidget *parent = 0);
     ~QueryResult();
 
 private:
+    void showResultInfo();
+    //OutGoodsSupplier
+    //库存查询结果
+    void obligationResult();
+    //入库查询结果
+    void inGoodsResult();
+    //出库查询结果
+    void outGoodsResult();
+    //供应商查询结果
+    void supplierResult();
+
+private:
     Ui::QueryResult *ui;
+    QJsonObject json;
 };
 
 #endif // QUERYRESULT_H
